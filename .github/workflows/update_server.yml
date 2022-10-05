@@ -16,7 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build the Docker image
         run: docker build . -t ghcr.io/veganna/sales_dashboard:latest
       - name: Login to GitHub Container Registry
@@ -39,16 +39,11 @@ jobs:
         run: docker-compose run web python manage.py migrate
       - name: deploy to server          
         uses: appleboy/ssh-action@master
-        env:
-          HOST: ${{ secrets.HOST }}
-          USERNAME: ${{ secrets.USERNAME }}
-          KEY: ${{ secrets.KEY }}
-          PORT: ${{ secrets.PORT }}
         with:
-          host: $HOST
-          username: $USERNAME
-          key: $KEY
-          port: $PORT
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
           script: |
             docker-compose pull
             docker-compose up -d
