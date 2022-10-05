@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ghcr.io/veganna/sales_dashboard:latest && docker exec -it sales_dashboard python manage.py migrate
+        run: docker build . --file Dockerfile --tag ghcr.io/veganna/sales_dashboard:latest
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
