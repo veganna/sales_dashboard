@@ -48,7 +48,7 @@ jobs:
           host: $HOST
           username: $USERNAME
           key: $KEY
-          port: PORT
+          port: $PORT
           script: |
             docker-compose pull
             docker-compose up -d
