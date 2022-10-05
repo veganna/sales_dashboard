@@ -27,7 +27,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push image to GitHub Container Registry
-        uses: docker/push-action@v1
+        uses: docker/build-push-action@v2
         with:
           registry: ghcr.io
           repository: veganna/sale_dashboard
