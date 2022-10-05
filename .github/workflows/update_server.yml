@@ -1,0 +1,43 @@
+#on push ot pull request to main branch, run the following steps:
+# - checkout the code
+# - build the docker image
+# - ssh into the server
+# - pull the docker image from the docker hub
+# - run the docker image
+# - make migrations
+# - migrate
+# - runserver
+
+name: Horizon Sales Ecommenrce
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+    
+    build:
+  
+      runs-on: ubuntu-latest
+  
+      steps:
+      - uses: actions/checkout@v3
+      - name: Horizon Sales Dashboard
+        run: docker build . --file Dockerfile --tag horizon-sales-dashboard:$(date +%s)
+      - name: SSH into server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            docker pull horizonsalesdashboard:latest
+            docker run -d -p 8000:8000 horizonsalesdashboard:latest
+            docker exec -it horizonsalesdashboard:latest python manage.py makemigrations
+            docker exec -it horizonsalesdashboard:latest python manage.py migrate
+            docker exec -it horizonsalesdashboard:latest python manage.py runserver
+            systemctl restart nginx
+
