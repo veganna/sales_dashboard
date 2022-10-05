@@ -1,0 +1,250 @@
+{% extends "dashpages/includes/base.html"%}
+{% load static %}
+
+{% block title %}Subscription Details{% endblock %}
+
+
+{% block css %}{% endblock %}
+
+{% block main %}
+                        
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Subscriber Details</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/dashboard/">Ecommerce</a></li>
+                    <li class="breadcrumb-item"><a href="/dashboard/subscribers/">Subscribers</a></li>
+                    <li class="breadcrumb-item active">Subscriber Details</li>
+                </ol>
+            </div>
+            
+
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<!-- Make a overview page for a single subscriber-->
+<div class="row">
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                
+                <div class="text-center">
+                    <div class="mb-4">
+                        <img src="{% static "dashpages/assets/images/users/avatar-2.jpg" %}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
+
+                        <h5 class="font-size-15 mt-3">Kevin Baker</h5>
+                        <p class="text-muted">
+                            <i class="mdi mdi-map-marker me-1"></i> New York, USA
+                        </p>
+                    </div>
+                    <div class="mb-3">
+                        <!-- Make a table with (current subscription, current price, subscription term, last paid date, subscription status) -->
+                        <table class="table table-nowrap table-hover mb-0">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Current Subscription:</th>
+                                    <td>Basic</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Current Price:</th>
+                                    <td>$10</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Subscription Term:</th>
+                                    <td>Monthly</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Last Paid Date:</th>
+                                    <td>12/12/2021</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Subscription Status:</th>
+                                    <td>Active</td>
+                                </tr>
+                                
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Make a table to overview subscription payments -->
+    <div class="col-xl-8">
+        <div class="card">
+            
+            <div class="card-body">
+                <div class="top-row" style="display: flex; justify-content:space-between; align-items:center;">
+                    <h4 class="card-title ">Subscription Payments</h4>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Subscriber Actions<i class="mdi mdi-chevron-down"></i></button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item waves waves-effect" href="/dashboard/customer-details/" >View User</a>                                                   
+                            <a class="dropdown-item waves waves-effect" href="#" data-bs-toggle="modal" data-bs-target="#changePriceModal">Change Price</a>                                                   
+                            <a class="dropdown-item waves waves-effect" href="#" data-bs-toggle="modal" data-bs-target="#refundModal">Refund</a>                                                   
+                            <a class="dropdown-item waves waves-effect" href="#" data-bs-toggle="modal" data-bs-target="#cancelSubscriptionModal">Cancel Subscription</a>                                                   
+                            <a class="dropdown-item waves waves-effect" href="#" data-bs-toggle="modal" data-bs-target="#deleteSubscriberModal">Delete Subscriber</a>                                                   
+                        </div>
+                    </div>
+
+                </div>
+                
+                <!-- create dropdown to the right -->
+                
+                <div class="table-responsive">
+                    <table class="table table-nowrap table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Payment ID</th>
+                                <th scope="col">Payment Date</th>
+                                <th scope="col">Payment Amount</th>
+                                <th scope="col">Payment Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">#SK2540</th>
+                                <td>01/01/2021</td>
+                                <td>$400</td>
+                                <td><span class="badge bg-soft-success text-success">Paid</span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">#SK2541</th>
+                                <td>01/01/2021</td>
+                                <td>$380</td>
+                                <td><span class="badge bg-soft-success text-success">Paid</span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">#SK2542</th>
+                                <td>01/01/2021</td>
+                                <td>$384</td>
+                                <td><span class="badge bg-soft-success text-success">Paid</span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">#SK2543</th>
+                                <td>01/01/2021</td>
+                                <td>$412</td>
+                                <td><span class="badge bg-soft-success text-success">Paid</span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">#SK2544</th>
+                                <td>01/01/2021</td>
+                                <td>$400</td>
+                                <td><span class="badge bg-soft-success text-success">Paid</span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">#SK2545</th>
+                                <td>01/01/2021</td>
+                                <td>$385</td>
+                                <td><span class="badge bg-soft-success text-success">Paid</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+<!-- Create modal for delete subscriber confirmation -->
+<div class="modal fade" id="deleteSubscriberModal" tabindex="-1" role="dialog" aria-labelledby="deleteSubscriberModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteSubscriberModalLabel">Delete Subscriber</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this subscriber?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create modal for change price -->
+<div class="modal fade" id="changePriceModal" tabindex="-1" role="dialog" aria-labelledby="changePriceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePriceModalLabel">Change Price</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="text" class="form-control" id="price" placeholder="Enter price">
+                    <label for="term" class="form-label">Term</label>
+                    <select class="form-select" id="term">
+                        <option selected>Choose...</option>
+                        <option value="1">Monthly</option>
+                        <option value="2">Yearly</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Select Term -->
+                <
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Create a modal for refunds -->
+<div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="refundModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="refundModalLabel">Refund</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="refundAmount" class="form-label">Refund Amount(Max $150):</label>
+                    <input type="text" class="form-control" id="refundAmount" placeholder="Enter refund amount">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Refund</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Create a modal for cancel subscrptions -->
+<div class="modal fade" id="cancelSubscriptionModal" tabindex="-1" role="dialog" aria-labelledby="cancelSubscriptionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelSubscriptionModalLabel">Cancel Subscription</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to cancel this subscription?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+                      
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

@@ -1,0 +1,326 @@
+{% extends "dashpages/includes/base.html"%}
+{% load static %}
+
+{% block title %}Order Details{% endblock %}
+
+
+{% block css %}<link href="{% static 'dashpages/assets/css/order-details.css' %}" id="app-style" rel="stylesheet" type="text/css" />{% endblock %}
+
+{% block main %}
+
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <div><h4>Order Details</h4><a href="/dashboard/orders/"><button type="button" class="btn btn-primary btn-rounded waves-effect waves-light" >Go Back</button></a></div>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/dashboard/">Ecommerce</a></li>
+                    <li class="breadcrumb-item"><a href="/dashboard/orders/">Orders</a></li>
+                    <li class="breadcrumb-item active">Order Details</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="flex-me">
+                    
+                    <h5 class="no-break">Order Status:</h5>
+                    <select class="form-select" style="width:8rem;" id="status-select">
+                        <option selected value="Processing">Processing</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Canceled">Canceled</option>
+                    </select>
+                    <button type="button" class="btn btn-primary btn-rounded btn-sm waves-effect waves-light" id="update-status">Update Order</button>
+                    <button type="button" class="btn btn-danger btn-rounded btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#delete"  >Delete Order</button>
+                    <!-- add a tracking number -->
+                    <div class="input-group" style="width: 15rem;">
+                        <input type="text" class="form-control" placeholder="Tracking Number" aria-label="Recipient's username" aria-describedby="add-tracking" id="tracking-input">
+                        <button class="btn btn-primary" type="button" id="add-tracking">Add</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">Customer Details</h4>
+
+                <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid">
+
+                                <tbody>
+                                    <tr class="odd">
+                                        <th>Name:</th>
+                                        <td>Adam Kawalski</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <th>Email:</th>
+                                        <td>adam@adam.com</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <th>Phone:</th>
+                                        <td>505-510-2034</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <th>Customer Since</th>
+                                        <td>14th July, 2013</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <th>Payment Method:</th>
+                                        <td>Paypal</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <th>Total Orders:</th>
+                                        <td>2</td>
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+                
+                    
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">Shipping Information</h4>
+
+                <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid">
+
+                                <tbody>
+                                    <tr class="odd">
+                                        <th>Name:</th>
+                                        <td>Adam Kawalski</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <th>Address Line 1</th>
+                                        <td>539 HWY 472</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <th>Address Line 2</th>
+                                        <td>505-510-2034</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <th>City</th>
+                                        <td>Stanley</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <th>State</th>
+                                        <td>New Mexico</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <th>Zipcode</th>
+                                        <td>27228</td>
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+                
+                    
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">Order Summary</h4>
+
+                <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid">
+                                <thead>
+                                    <tr role="row">
+                                        <th tabindex="0" rowspan="1" colspan="1"><h5>Item</h5></th>
+                                        <th tabindex="0" rowspan="1" colspan="1"  ><h5>Quantity</h5></th>
+                                        <th tabindex="0" rowspan="1" colspan="1"  ><h5>Price</h5></th>
+                                        <th tabindex="0" rowspan="1" colspan="1"  ><h5>Total</h5></th></tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr class="odd">
+                                        <td class="dtr-control" tabindex="0"> <img src="{% static "dashpages/assets/images/brands/dropbox.png" %}" alt="dropbox">  Bag Of Chips</td>
+                                        <td>2</td>
+                                        <td>$12.99</td>
+                                        <td>$24.99</td>
+                                    </tr>
+                                    <tr class="Even">
+                                        <td class="dtr-control" tabindex="0"> <img src="{% static "dashpages/assets/images/brands/dropbox.png" %}" alt="dropbox">  Bag Of Chips</td>
+                                        <td>2</td>
+                                        <td>$12.99</td>
+                                        <td>$24.99</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <td class="dtr-control" tabindex="0">Sub Total</td>
+                                        <td><h5>-</h5></td>
+                                        <td><h5>-</h5></td>
+                                        <td>$24.99</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <td class="dtr-control" tabindex="0">Taxes</td>
+                                        <td><h5>-</h5></td>
+                                        <td><h5>-</h5></td>
+                                        <td>$24.99</td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <td class="dtr-control" tabindex="0"><h5>Total</h5></td>
+                                        <td><h5>-</h5></td>
+                                        <td><h5>-</h5></td>
+                                        <td><h5>$24.99</h5></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Warning</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you would like to delete this order?</h5>
+                <p>#NZ193B Craig Larson 12/17/24</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cancel</button>
+                <button id="deleteButton" type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal">Delete</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}
+
+{% block scripts %}
+
+
+<script>
+    
+    $(document).ready(function() {
+        $('#deleteButton').click(function() {
+            window.location.href = "/dashboard/orders";
+
+            
+
+            Command: toastr["success"]("Order Deleted Successfully")
+
+            toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": 300,
+            "hideDuration": 1000,
+            "timeOut": 5000,
+            "extendedTimeOut": 1000,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+            }
+            
+        });
+
+        $('#add-tracking').click(function(){
+
+            //get value by id tracking-input
+            const inputValue = document.getElementById("tracking-input").value  
+
+            Command: toastr["success"]( inputValue + " has been added.")
+
+            toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": 300,
+            "hideDuration": 1000,
+            "timeOut": 5000,
+            "extendedTimeOut": 1000,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+            }
+
+
+        });
+
+        $('#update-status').click(function(){
+
+            //get value by id tracking-input
+            const inputValue = document.getElementById("status-select").value
+
+            Command: toastr["success"]( "Status "+ inputValue + " has been updated.")
+
+            toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": 300,
+            "hideDuration": 1000,
+            "timeOut": 5000,
+            "extendedTimeOut": 1000,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+            }
+        
+        });
+    });
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,8 @@
+#layout-wrapper > div.main-content > div > div > div:nth-child(1) > div > div > div:nth-child(1) > h4{
+    margin: 0;
+}
+#layout-wrapper > div.main-content > div > div > div:nth-child(1) > div > div > div:nth-child(1){
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}

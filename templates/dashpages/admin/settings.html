@@ -1,0 +1,611 @@
+
+{% extends "dashpages/includes/base.html"%}
+{% load static %}
+
+{% block title %}Edit Digital Product{% endblock %}
+
+
+{% block css %}{% endblock %}
+
+{% block main %}
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Settings</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Settings</a></li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<!-- Create a edit user profile page -->
+<div class="row">
+    <div class="col-2">
+        <div class="card">
+            <div class="card-body">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <!-- Make Profile Settings Devider -->
+                    <h5>Profile</h5>
+                    <a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                        <i class="ri-user-2-line align-middle " style="font-size: 1.2rem;"></i> <span class="align-middle">Profile</span>
+                    </a>
+                    <a class="nav-link" id="password-tab" data-bs-toggle="pill" href="#password" role="tab" aria-controls="password" aria-selected="false">
+                        <i class="ri-lock-2-line align-middle " style="font-size: 1.2rem;"></i> <span class="align-middle">Security</span>
+                    </a>
+                    <hr>
+                    <h5>Store</h5>
+                    <a class="nav-link" id="api-tab" data-bs-toggle="pill" href="#api" role="tab" aria-controls="api" aria-selected="false">
+                        <i class="ri-code-s-slash-fill align-middle" style="font-size: 1.2rem;" ></i>
+                        <span class="align-middle">API</span>
+                    </a>
+                    <a class="nav-link" id="api-tab" data-bs-toggle="pill" href="#shipping" role="tab" aria-controls="shipping" aria-selected="false" style="display: inline-table;">
+                        <i class="ri-mail-send-fill align-middle" style="font-size: 1.2rem;" ></i>
+                        <span class="align-middle">Shipping</span>
+                    </a>
+                    
+                    
+                    <a class="nav-link" id="api-tab" data-bs-toggle="pill" href="#tax" role="tab" aria-controls="tax" aria-selected="false">
+                        <i class="ri-bar-chart-box-line align-middle" style="font-size: 1.2rem;"></i>
+                        <span class="align-middle">Taxes</span>
+                    </a>
+                    <hr>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Create two cards for the tabs -->
+    <div class="col-md-10"> 
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <!-- START TABS -->
+
+
+                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                        <h4>Profile Settings</h4>
+                        <hr>
+                        <div class="text-center mb-3">
+                            <img src="{% static "dashpages/assets/images/users/avatar-2.jpg" %}" class="rounded-circle" alt="profile-image" height="110">
+                            <div class="mt-2">
+                                <a href="#" class="btn btn-primary btn-sm">Change Profile Picture</a>
+                            </div>
+            
+                        </div>
+                        <hr>
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="first_name" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="first_name" placeholder="Enter first name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="last_name" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="last_name" placeholder="Enter last name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email <span class="badge bg-success font-size-12">Confirmed</span></label>
+                                        <input type="email" class="form-control" id="email" placeholder="Enter email">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Phone 
+                                        <!-- 
+                                            Add a button to confirm the phone number that opens the modal confirm-phone
+                                            -->
+                                        <button type="button" class="btn btn-primary btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#confirm-phone">Confirm</button>
+                                        </label>
+                                        <input type="text" class="form-control" id="phone" placeholder="Enter phone">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Bio -->
+                            <div class="mb-3">
+                                <label for="bio" class="form-label">Bio</label>
+                                <textarea class="form-control" id="bio" rows="3" placeholder="Write something..."></textarea>
+                            </div>
+                        
+                            <!-- Add save button to the right -->
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+                    </div>
+
+
+
+                    
+                    <!-- MORE TABS -->
+
+
+
+
+                    <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+                        <h4>Security Settings</h4>
+                        <hr>
+                        <form>
+
+                            <div class="mt-4">
+                                <h5 class="font-size-14 mb-3">Use Email Verification <span class="badge bg-success font-size-12">Confirmed</span></h5> 
+                                <!-- Email address confirmed to the right in green -->
+                                    
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" data-bs-toggle="modal" data-bs-target="#confirm-email">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Disable/Enable</label>
+                                </div>
+                            </div>
+                            <!-- Create toggle for phone verification that opens the modal -->
+                            <div class="mt-4">
+                                <h5 class="font-size-14 mb-3">Use Phone Verification <span class="badge bg-success font-size-12">Confirmed</span></h5> 
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" data-bs-toggle="modal" data-bs-target="#confirm-phone2">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Disable/Enable</label>
+                                </div>
+                            </div>
+                            
+                            
+                            <!-- Create a linebreak-->
+                            <hr>
+
+
+                            <div class="row">
+                                
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="current_password" class="form-label">Current Password</label>
+                                        <input type="password" class="form-control" id="current_password" placeholder="Enter current password">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="new_password" class="form-label">New Password</label>
+                                        <input type="password" class="form-control" id="new_password" placeholder="Enter new password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                                        <input type="password" class="form-control" id="confirm_password" placeholder="Enter confirm password">
+                                    </div>
+                                </div>
+                            </div>
+
+                                <!-- Add save button to the right -->
+                                <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+
+
+                    <!-- /make a tab for api settings -->
+                    <div class="tab-pane fade" id="api" role="tabpanel" aria-labelledby="api">
+                        <h4>API Settings</h4>
+                        <hr>
+                        <form>
+                            <!-- Enable Paypal? -->
+                            <div class="mt-4">
+                                <h5 class="font-size-14 mb-3">Enable Paypal</h5> 
+
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Disable/Enable</label>
+                                </div>
+                            </div>
+                            <!-- Form to display when paypal is enabled -->
+                            <div class="row ">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="paypal_client_id" class="form-label">Paypal Client ID</label>
+                                        <input type="text" class="form-control" id="paypal_client_id" placeholder="Enter paypal client id">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="paypal_secret" class="form-label">Paypal Secret</label>
+                                        <input type="text" class="form-control" id="paypal_secret" placeholder="Enter paypal secret">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <h5 class="font-size-14 mb-3">Enable Stripe</h5> 
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Disable/Enable</label>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-size-14 mb-3">Enable Google Analytics</h5> 
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Disable/Enable</label>
+                                </div>
+                            </div>
+                            <!-- Paypal API Keys -->
+                            
+                        
+                            <!-- Add save button to the right -->
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- add a tab for Tax & Shipping -->
+                    <div class="tab-pane fade" id="tax" role="tabpanel" aria-labelledby="tax">
+                        <h4>Tax Settings</h4>
+                        <hr>
+                        <form>
+                            <!-- Add a tax data table -->
+                            <div class="table-responsive">
+                                <table class="table table-centered table-nowrap mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width: 20px;">
+                                                <div class="form-check font-size-16">
+                                                    <input class="form-check-input" type="checkbox" id="customCheck1">
+                                                    <label class="form-check-label" for="customCheck1"></label>
+                                                </div>
+                                            </th>
+                                            <th>Tax Type</th>
+                                            <th>Tax State/Zip Code</th>
+                                            <th>Tax Rate (%)</th>
+                                            <th>Physical Items</th>
+                                            <th>Digital Items</th>
+                                            <th>Services</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="form-check font-size-16">
+                                                    <input class="form-check-input" type="checkbox" id="customCheck2">
+                                                    <label class="form-check-label" for="customCheck2"></label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <!-- Make a dropdown for State/Zipcode -->
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option value="1">State</option>
+                                                    <option value="2">Zipcode</option>
+                                                </select>
+                                                
+
+                                            </td>
+                                            <td>
+                                                <!-- Input box for tax rate -->
+                                                <input type="text" class="form-control" id="zip" placeholder="Enter Zipcode">
+                                                
+                                            </td>
+                                            <td><input type="text" class="form-control" id="tax_rate" placeholder="Enter tax rate"></td>
+                                            <td>
+                                                <!-- On Off Toggle -->
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                </div>
+                                            </td>
+                                            <td><div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                            </div></td>
+                                            <td><div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                            </div></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-check font-size-16">
+                                                    <input class="form-check-input" type="checkbox" id="customCheck2">
+                                                    <label class="form-check-label" for="customCheck2"></label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <!-- Make a dropdown for State/Zipcode -->
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option value="1">State</option>
+                                                    <option value="2">Zipcode</option>
+                                                </select>
+                                                
+
+                                            </td>
+                                            <td>
+                                                <!-- Select box to select state -->
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option value="1">Alabama</option>
+                                                    <option value="2">Alaska</option>
+                                                    <option value="3">Arizona</option>
+                                                    <option value="4">Arkansas</option>
+                                                    <option value="5">California</option>
+                                                    <option value="6">Colorado</option>
+                                                    <option value="7">Connecticut</option>
+                                                    <option value="8">Delaware</option>
+                                                    <option value="9">Florida</option>
+                                                    <option value="10">Georgia</option>
+                                                    <option value="11">Hawaii</option>
+                                                    <option value="12">Idaho</option>
+                                                    <option value="13">Illinois</option>
+                                                    <option value="14">Indiana</option>
+                                                    <option value="15">Iowa</option>
+                                                    <option value="16">Kansas</option>
+                                                    <option value="17">Kentucky</option>
+                                                    <option value="18">Louisiana</option>
+                                                    <option value="19">Maine</option>
+                                                    <option value="20">Maryland</option>
+                                                    <option value="21">Massachusetts</option>
+                                                    <option value="22">Michigan</option>
+                                                    <option value="23">Minnesota</option>
+                                                    <option value="24">Mississippi</option>
+                                                    <option value="25">Missouri</option>
+                                                    <option value="26">Montana</option>
+                                                    <option value="27">Nebraska</option>
+                                                    <option value="28">Nevada</option>
+                                                    <option value="29">New Hampshire</option>
+                                                    <option value="30">New Jersey</option>
+                                                    <option value="31">New Mexico</option>
+                                                    <option value="32">New York</option>
+                                                    <option value="33">North Carolina</option>
+                                                    <option value="34">North Dakota</option>
+                                                    <option value="35">Ohio</option>
+                                                    <option value="36">Oklahoma</option>
+                                                    <option value="37">Oregon</option>
+                                                    <option value="38">Pennsylvania</option>
+                                                    <option value="39">Rhode Island</option>
+                                                    <option value="40">South Carolina</option>
+                                                    <option value="41">South Dakota</option>
+                                                    <option value="42">Tennessee</option>
+                                                    <option value="43">Texas</option>
+                                                    <option value="44">Utah</option>
+                                                    <option value="45">Vermont</option>
+                                                    <option value="46">Virginia</option>
+                                                    <option value="47">Washington</option>
+                                                    <option value="48">West Virginia</option>
+                                                    <option value="49">Wisconsin</option>
+                                                    <option value="50">Wyoming</option>
+                                                </select>
+
+                                                
+                                            </td>
+                                            <td><input type="text" class="form-control" id="tax_rate" placeholder="Enter tax rate"></td>
+                                            <td>
+                                                <!-- On Off Toggle -->
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                </div>
+                                            </td>
+                                            <td><div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                            </div></td>
+                                            <td><div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                            </div></td>
+                                            
+                                        </tr>
+
+                                        <!-- Make a button for adding a new row -->
+                                        <tr>
+                                            <td colspan="7">
+                                                <button type="button" class="btn btn-primary waves-effect waves-light">Add New Row</button>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Add save button to the right -->
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+                    </div>
+
+
+
+
+
+
+
+                    <!-- Add shipping tab -->
+                    <div class="tab-pane fade" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
+                        <h4>Shipping Settings</h4>
+                        <hr>
+                        <form>
+                            <!-- Create Shipping policies table -->
+                            <div class="table-responsive">
+                                <table class="table table-centered table-nowrap mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Policy Name</th>
+                                            <th>Location</th>
+                                            <th>Type</th>
+                                            <th>Fixed Price</th>
+                                            <th>Percentage</th>
+                                        </tr>
+                                    </thead>
+
+
+                                    <!-- Make a row -->
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="text" class="form-control" id="policy_name" placeholder="Enter policy name"></td>
+                                            <td>
+                                                <input type="text">                                                              
+                                            </td>
+                                            <td>
+                                                <select class="form-select" aria-label="Default select example">
+                                                    <option selected>Fixed Price</option>
+                                                    <option value="1">Percentage</option>
+                                                    <option value="1">Fixed Price + Percentage</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" class="form-control" id="fixed_price" placeholder="Enter fixed price"></td>
+                                            <td><input type="text" class="form-control" id="percentage" placeholder="Enter percentage"></td>
+                                        </tr>
+                                        <!-- add a button to add a new row -->
+                                        <tr>
+                                            <td colspan="5">
+                                                <button type="button" class="btn btn-primary waves-effect waves-light">Add New Row</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                                
+
+                                </table>
+                            </div>
+                            
+
+
+                            <!-- Add save button to the right -->
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+                    </div>
+
+
+
+
+
+
+                    <!-- END TABS -->
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- Make a modal to confirm the security code sent to the phone -->
+    <div class="modal fade" id="confirm-phone" tabindex="-1" role="dialog" aria-labelledby="confirm-phoneLabel" aria-hidden="true"  style="
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    ">
+        <div class="modal-dialog modal-dialog-centered" role="document" 
+        >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirm-phoneLabel">Confirm Phone</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+
+                        <div class="mb-3">
+                            <span>Code Sent To: <strong>505-666-6897</strong></span>
+                            <!-- Resend code button -->
+                            <div class="row" style="display: flex;">
+                                <div class="col-6"><input type="text" class="form-control" id="code" placeholder="Enter code"></div>
+                                <div class="col-6"><button type="button" class="btn btn-primary waves-effect waves-light float-start">Resend Code</button></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirm-phone2" tabindex="-1" role="dialog" aria-labelledby="confirm-phoneLabel" aria-hidden="true"  style="
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    ">
+        <div class="modal-dialog modal-dialog-centered" role="document" 
+        >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirm-phoneLabel">Confirm Phone</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- SAd -->
+
+                        <div class="mb-3">
+                            <label for="code" class="form-label">Phone Number</label>
+                            <!-- Resend code button -->
+                            <div class="row" style="display: flex;">
+                                <div class="col-6"><input type="text" class="form-control" id="number" placeholder="Enter number"></div>
+                            </div>
+                            <label for="code" class="form-label">Code</label>
+                            <!-- Resend code button -->
+                            <div class="row" style="display: flex;">
+                                <div class="col-6"><input type="text" class="form-control" id="code" placeholder="Enter code"></div>
+                                <div class="col-6"><button type="button" class="btn btn-primary waves-effect waves-light float-start">Resend Code</button></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirm-email" tabindex="-1" role="dialog" aria-labelledby="confirm-email" aria-hidden="true"  style="
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    ">
+        <div class="modal-dialog modal-dialog-centered" role="document" 
+        >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirm-emailLabel">Confirm Email</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Email sent to example@emaill.com -->
+                
+
+                <div class="modal-body">
+                    <span>Email Sent To: <strong>Example@gmail.com</strong></span>
+                    <form>
+                        <!-- SAd -->
+
+                        <div class="mb-3">
+                            
+                            <label for="code" class="form-label">Code</label>
+                            <!-- Resend code button -->
+                            <div class="row" style="display: flex;">
+                                <div class="col-6"><input type="text" class="form-control" id="e-code" placeholder="Enter code"></div>
+                                <div class="col-6"><button type="button" class="btn btn-primary waves-effect waves-light float-start">Resend Code</button></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}{% endblock %}

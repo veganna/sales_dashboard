@@ -1,0 +1,524 @@
+{% extends 'dashpages/includes/base.html' %}
+{% load static %}
+
+{% block title %}Edit Simple Product{% endblock %}
+
+
+{% block css %}
+<link href="{% static 'dashpages/assets/css/edit-product.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+
+{% endblock %}
+
+{% block main %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <div><h4>Add/Edit Product</h4><a href="/dashboard/products"><button type="button" class="btn btn-primary btn-rounded waves-effect waves-light" >Go Back</button></a></div>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/dashboard/">Ecommerce</a></li>
+                    <li class="breadcrumb-item"><a href="/dashboard/products/">Products</a></li>
+                    <li class="breadcrumb-item active">Add/Edit Product</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Product Information</h4>
+                
+                <div class="table-responsive">
+                    <table class="table table-striped mb-0">
+
+                        <tbody>
+                            <tr>
+                                <th>Visibility</th>
+                                <th>Unpublished</th>
+                            </tr>
+                            <tr>
+                                <th scope="row">Created</th>
+                                <td>January 7th, 2022</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Price</th>
+                                <td>$7.99</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Discounted Price</th>
+                                <td>$7.22</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Abandoned Carts</th>
+                                <td>7</td>
+                            </tr>
+                            <tr>
+                                <th>Views</th>
+                                <td>12</td>
+                            </tr>
+                            <tr>
+                                <th>Sales</th>
+                                <td>2</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <div class="text-center mt-4">
+                                
+                        <button type="submit" class="btn btn-primary me-2 waves-effect waves-light">Save Changes</button>
+                        <button type="submit" class="btn btn-info me-2 waves-effect waves-light">Duplicate Product</button>
+                        <button type="submit" class="btn btn-danger me-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#delete">Delete</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Line with Data Labels</h4>
+
+                <div id="line_chart_dashed" class="apex-charts" dir="ltr"></div>                               
+            </div>
+        </div><!--end card-->
+    </div>
+
+
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                
+                <div id="addproduct-nav-pills-wizard" class="twitter-bs-wizard">
+                    <ul class="twitter-bs-wizard-nav">
+                        <li class="nav-item">
+                            <a href="#basic-info" class="nav-link" data-bs-toggle="tab">
+                                <span class="step-number">01</span>
+                                <span class="step-title">Basic Info</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#product-img" class="nav-link" data-bs-toggle="tab">
+                                <span class="step-number">02</span>
+                                <span class="step-title">Product Images</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#shipping" class="nav-link" data-bs-toggle="tab">
+                                <span class="step-number">03</span>
+                                <span class="step-title">Shipping</span>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="#metadata" class="nav-link" data-bs-toggle="tab">
+                                <span class="step-number">04</span>
+                                <span class="step-title">Meta Data</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#visibility" class="nav-link" data-bs-toggle="tab">
+                                <span class="step-number">05</span>
+                                <span class="step-title">Visibility</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- end ul -->
+                    <div class="tab-content twitter-bs-wizard-tab-content">
+                        <div class="tab-pane" id="basic-info">
+                                <h4 class="card-title">Basic Information</h4>
+                                <p class="card-title-desc">Fill all information below</p>
+                                
+        
+                            <form>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label" class="control-label">Product Type</label>
+                                        <select class="form-control select2">
+                                            <option value="EL">Simple</option>
+                                            <option value="FA">Variable</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3 col-lg-">
+                                        <label class="form-label" for="productname">Product Name</label>
+                                        <input type="text" id="productname" name="productname" class="form-control" placeholder="Enter product name">
+                                    </div>
+
+
+                                    <div class="mb-3 col-lg-4">
+                                        <label class="form-label" for="quantity">Quantity</label>
+                                        <input type="number" id="quantity" name="quantity" class="form-control" placeholder="Enter quantity">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    
+                                    <!-- end col -->
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="price">Price</label>
+                                            <input id="price" name="price" type="number" class="form-control" placeholder="Enter Price">
+                                        </div>
+                                    </div>
+                                    <!-- end col -->
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label" class="control-label">Discount Type</label>
+                                            <select class="form-control select2">
+                                                <option value="EL">No Discount</option>
+                                                <option value="FA">Percentage Discount</option>
+                                                <option value="FI">Fixed Discount</option>
+                                                <option value="FI">Type In Sale Price</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label" class="control-label">Discount Ammount</label>
+
+                                            <!-- input for sale price -->
+                                            <input id="saleprice" name="saleprice" type="text" class="form-control" placeholder="Enter ammount">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end row -->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label" class="control-label">Category</label>
+                                            <select class="form-control select2">
+                                                <option>Select</option>
+                                                <option value="EL">Electronic</option>
+                                                <option value="FA">Fashion</option>
+                                                <option value="FI">Fitness</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label" class="control-label">Sub Category</label>
+                                            <select class="form-control select2">
+                                                <option>Select</option>
+                                                <option value="EL">Electronic</option>
+                                                <option value="FA">Fashion</option>
+                                                <option value="FI">Fitness</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label" class="control-label">Cupon Codes</label>
+
+                                            <select class="select2 form-control select2-multiple" multiple="multiple" data-placeholder="Choose ...">
+                                                <option value="TO">Touchscreen</option>
+                                                <option value="CF">Call Function</option>
+                                                <option value="NO" selected>Notifications</option>
+                                                <option value="FI" selected>Fitness</option>
+                                                <option value="OU">Outdoor</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <!-- make product discount -->
+                                
+                                    
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="productdesc">Product Description</label>
+                                    <textarea class="form-control" id="productdesc" rows="5"></textarea>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="tab-pane" id="product-img">
+                            <h4 class="card-title">Product Images</h4>
+                            <p class="card-title-desc">Upload product image</p>
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Image Name</th>
+                                            <th>Image Size</th>
+                                            <th>Alt Tags</th>
+                                            <th>Image Caption</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td><img src="{% static "dashpages/assets/images/flags/germany.jpg" %}"> Mark.png <i class="mdi mdi-pencil"></i></td>
+                                            <td>15kb</td>
+                                            <td> <!-- input for putting image alt tags -->
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="quantity" name="quantity">
+                                                </div>
+                                            </td>
+                                            <td> <!-- input for putting image caption -->
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="quantity" name="quantity">
+                                                </div>
+                                            </td>
+                                            <td><i class="mdi mdi-trash-can font-size-18"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td><img src="{% static "dashpages/assets/images/flags/germany.jpg" %}"> Mark.png <i class="mdi mdi-pencil"></i></td>
+                                            <td>15kb</td>
+                                            <td> <!-- input for putting image alt tags -->
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="quantity" name="quantity">
+                                                </div>
+                                            </td>
+                                            <td> <!-- input for putting image caption -->
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="quantity" name="quantity">
+                                                </div>
+                                            </td>
+                                            <td><i class="mdi mdi-trash-can font-size-18"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td><img src="{% static "dashpages/assets/images/flags/germany.jpg" %}"> Mark.png <i class="mdi mdi-pencil"></i></td>
+                                            <td>15kb</td>
+                                            <td> <!-- input for putting image alt tags -->
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="quantity" name="quantity">
+                                                </div>
+                                            </td>
+                                            <td> <!-- input for putting image caption -->
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="quantity" name="quantity">
+                                                </div>
+                                            </td>
+                                            <td><i class="mdi mdi-trash-can font-size-18"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td><img src="{% static "dashpages/assets/images/flags/germany.jpg" %}"> Mark.png <i class="mdi mdi-pencil"></i></td>
+                                            <td>15kb</td>
+                                            <td> <!-- input for putting image alt tags -->
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="quantity" name="quantity">
+                                                </div>
+                                            </td>
+                                            <td> <!-- input for putting image caption -->
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="quantity" name="quantity">
+                                                </div>
+                                            </td>
+                                            <td><i class="mdi mdi-trash-can font-size-18"></i></td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <form action="/" method="post" class="dropzone">
+                                <div class="fallback">
+                                    <input name="file" type="file" multiple />
+                                </div>
+
+                                <div class="dz-message needsclick">
+                                    <div class="mb-3">
+                                        <i class="display-4 text-muted ri-upload-cloud-2-line"></i>
+                                    </div>
+                                    
+                                    <h4>Drop files here or click to upload.</h4>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="shipping">
+                            <h4 class="card-title">Shipping Information</h4>
+                            <p class="card-title-desc">Add your shipping Charges</p>
+
+                            <!-- Make a form for shipping charges -->
+                            <form>
+                                <div class="row">
+                                    <!-- Dropdown "Shipping type" -->
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label" class="control-label">Shipping Type</label>
+                                            <select class="form-control select2">
+                                                <option value="FI">Store Policy 1</option>
+                                                <option value="EL">Fixed</option>
+                                                <option value="FA">Variable</option>
+                                                <option value="FI">Free</option>
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label" class="control-label">Shipping Price</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="visibility">
+                            <h4 class="card-title">Visibility</h4>
+                            <p class="card-title-desc">Here you set all your visibility settings.</p>
+
+                            <form>
+                                <!-- Make a drop down for public and private -->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label" class="control-label">Visibility</label>
+                                            <select class="form-control select2">
+                                                <option value="FI">Public</option>
+                                                
+                                                <option value="EL">Private</option>
+                                                <option value="EL">Scheduled</option>
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <!-- Make a date select -->
+                                        <div class="mb-3">
+                                            <label class="form-label" class="control-label">Start Date</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label" class="control-label">Featured</label>
+                                        <select class="form-control select2">
+                                            <option value="FI">Not Featured</option>
+                                            
+                                            <option value="EL">Featured Section 1</option>
+                                            <option value="EL">Featured Section 2</option>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+
+                                
+                                
+                            </form>
+
+                            
+                        </div>
+
+
+                        <div class="tab-pane" id="metadata">
+                            <h4 class="card-title">Meta Data</h4>
+                            <p class="card-title-desc">Fill all information below</p>
+
+                            <form>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="metatitle">Meta title</label>
+                                            <input id="metatitle" name="metatitle" type="text" class="form-control">
+                                        </div>
+                                        
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="metakeywords">Meta Keywords</label>
+                                            <input id="metakeywords" name="metakeywords" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="metadescription">Meta Description</label>
+                                    <textarea class="form-control" id="metadescription" rows="5"></textarea>
+                                </div>
+                                
+                            </form>
+
+                            
+                        </div>
+                    </div>
+                    <ul class="pager wizard twitter-bs-wizard-pager-link">
+                        <li class="previous"><a href="#">Previous</a></li>
+                        <li class="next"><a href="#">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<div id="delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Warning</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you would like to delete this product?</h5>
+                <p>Blue Pants | 2017 Edition</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cancel</button>
+                <button id="deleteButton" type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal">Delete</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}
+
+{% block scripts %}
+
+
+<script>
+    
+    $(document).ready(function() {
+        $('#deleteButton').click(function() {
+            //redirect to products page
+            window.location.href = "/dashboard/products";
+
+            //toast-bottom-right
+            Command: toastr["success"]("Are you the six fingered man?")
+
+            toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": 300,
+            "hideDuration": 1000,
+            "timeOut": 5000,
+            "extendedTimeOut": 1000,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+            }
+            
+        });
+    });
+</script>
+
+
+{% endblock %}

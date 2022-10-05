@@ -1,0 +1,149 @@
+{% extends "dashpages/includes/base.html"%}
+{% load static %}
+
+{% block title %}Customers{% endblock %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static '/dashpages/assets/css/changes.css' %}">
+{% endblock %}
+
+{% block main %}
+<!doctype html>
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Customers</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/dashboard/">Ecommerce</a></li>
+                    <li class="breadcrumb-item active">Customers</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div>
+                    <a href="/dashboard/customer-details/" class="btn btn-success mb-2" style="margin-right: 1rem;"><i class="mdi mdi-plus me-2"></i> Add Customer</a><a class="btn btn-light mb-2" data-bs-toggle="modal" data-bs-target="#delete"><i class=" ri-delete-bin-2-line hoverItem"></i> Delete</a>
+                </div>
+                <div class="table-responsive mt-3">
+                    <table class="table table-centered datatable dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead class="thead-light">
+                            <tr>
+                                <th style="width: 20px;">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="customercheck">
+                                        <label class="form-check-label mb-0" for="customercheck">&nbsp;</label>
+                                    </div>
+                                </th>
+                                <th>Customer</th>
+                                <th>Ammount Spent</th>
+                                <th>Active Orders</th>
+                                <th>Total Orders</th>
+                                <th>Joining Date</th>
+                                <th style="width: 120px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="customercheck1">
+                                        <label class="form-check-label mb-0" for="customercheck1">&nbsp;</label>
+                                    </div>
+                                </td>
+                                
+                                <td><a href="customer-detail.html">Carolyn Harvey</a></td>
+                                <td>$12</td>
+                                <td>1</td>
+                                
+                                <td>
+                                    2
+                                </td>
+                                <td>
+                                    06 Apr, 2020
+                                </td>
+                                
+                                <td id="tooltip-container1">
+                                    <a href="javascript:void(0);" class="me-3 text-primary" data-bs-container="#tooltip-container1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18 hoverItem"></i></a>
+                                    <a class="text-danger" data-bs-toggle="modal" data-bs-target="#delete" title="Delete"><i class="mdi mdi-trash-can font-size-18 hoverItem"></i></a>
+                                </td>
+                            </tr>
+                            
+                            
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+
+
+
+<!-- end row -->
+<div id="delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Warning</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you would like to delete this order?</h5>
+                <p>#NZ193B Craig Larson 12/17/24</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cancel</button>
+                <button id="deleteButton" type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal">Delete</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}
+
+{% block scripts %}
+
+
+<script>
+    
+    $(document).ready(function() {
+        $('#deleteButton').click(function() {
+            Command: toastr["success"]("Order Number #NZ193B has been deleted")
+
+            toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": 300,
+            "hideDuration": 1000,
+            "timeOut": 5000,
+            "extendedTimeOut": 1000,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+            }
+            
+        });
+    });
+</script>
+
+{% endblock %}

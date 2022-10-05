@@ -1,0 +1,174 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Horizon Ecommerce API",
+        "description": "API for the Ecommerce app",
+        "termsOfService": "https://horizon-development.com/terms/",
+        "contact": {
+            "email": "mateus@horizon-development.com"
+        },
+        "license": {
+            "name": "BSD License"
+        },
+        "version": "v1"
+    },
+    "basePath": "/api-auth",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "Basic": {
+            "type": "basic"
+        }
+    },
+    "security": [
+        {
+            "Basic": []
+        }
+    ],
+    "paths": {
+        "/login/": {
+            "post": {
+                "operationId": "login_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TokenObtainPair"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/TokenObtainPair"
+                        }
+                    }
+                },
+                "tags": [
+                    "login"
+                ]
+            },
+            "parameters": []
+        },
+        "/register/": {
+            "post": {
+                "operationId": "register_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Register"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Register"
+                        }
+                    }
+                },
+                "tags": [
+                    "register"
+                ]
+            },
+            "parameters": []
+        }
+    },
+    "definitions": {
+        "TokenObtainPair": {
+            "required": [
+                "email",
+                "password"
+            ],
+            "type": "object",
+            "properties": {
+                "email": {
+                    "title": "Email",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "password": {
+                    "title": "Password",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "Register": {
+            "required": [
+                "email",
+                "username",
+                "first_name",
+                "last_name",
+                "password",
+                "password2"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "email": {
+                    "title": "Email",
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 60,
+                    "minLength": 1
+                },
+                "username": {
+                    "title": "Username",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1
+                },
+                "first_name": {
+                    "title": "First name",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "last_name": {
+                    "title": "Last name",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "password": {
+                    "title": "Password",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "password2": {
+                    "title": "Password2",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "is_active": {
+                    "title": "Is active",
+                    "type": "boolean"
+                },
+                "is_staff": {
+                    "title": "Is staff",
+                    "type": "boolean"
+                },
+                "is_superuser": {
+                    "title": "Is superuser",
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}

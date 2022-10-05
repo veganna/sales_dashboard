@@ -1,0 +1,92 @@
+{% extends 'dashpages/base.html' %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+    <head>
+        
+        <meta charset="utf-8" />
+        <title>Dashboard | Horizon Development</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Horizon Dashboard Manager" name="description" />
+        <meta content="Horizon Development" name="author" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="{% static "dashpages/assets/images/fav.png" %}">
+
+        <!-- jquery.vectormap css -->
+        <link href="{% static "dashpages/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" %}" rel="stylesheet" type="text/css" />
+
+        <!-- DataTables -->
+        <link href="{% static "dashpages/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" %}" rel="stylesheet" type="text/css" />
+
+        <!-- Responsive datatable examples -->
+        <link href="{% static "dashpages/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" %}" rel="stylesheet" type="text/css" />  
+
+        <!-- Bootstrap Css -->
+        <link href="{% static "dashpages/assets/css/bootstrap.min.css" %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <!-- Icons Css -->
+        <link href="{% static "dashpages/assets/css/icons.min.css" %}" rel="stylesheet" type="text/css" />
+        <!-- App Css-->
+        <link href="{% static "dashpages/assets/css/app.min.css" %}" id="app-style" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body data-sidebar="dark">
+    
+    <!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+            <!-- 404 page -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-center">
+                        <div class="horizon" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                            <img src="{% static "dashpages/assets/images/Avatar.png" %}" alt="Horizon Logo" style="height: 8rem; margin-top: 1rem;">
+                            <span style="font-family: 'Montserrat', sans-serif; font-size: 1rem;">Horizon|<strong>DEV</strong></span>
+                        </div>
+                        
+                        <div style="font-size: 14rem; color: black;" data-text="404">404</div>
+                        <p class="lead text-gray-800 mb-5">Page Not Found</p>
+                        <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
+                        <a href="index.html">&larr; Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+
+          
+        </div>
+        <!-- END layout-wrapper -->
+
+       
+
+        <!-- JAVASCRIPT -->
+        <script src="{% static "dashpages/assets/libs/jquery/jquery.min.js" %}"></script>
+        <script src="{% static "dashpages/assets/libs/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+        <script src="{% static "dashpages/assets/libs/metismenu/metisMenu.min.js" %}"></script>
+        <script src="{% static "dashpages/assets/libs/simplebar/simplebar.min.js" %}"></script>
+        <script src="{% static "dashpages/assets/libs/node-waves/waves.min.js" %}"></script>
+
+        
+        <!-- apexcharts -->
+        <script src="{% static "dashpages/assets/libs/apexcharts/apexcharts.min.js" %}"></script>
+
+        <!-- jquery.vectormap map -->
+        <script src="{% static "dashpages/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js" %}"></script>
+        <script src="{% static "dashpages/assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-us-merc-en.js" %}"></script>
+
+        <!-- Required datatable js -->
+        <script src="{% static "dashpages/assets/libs/datatables.net/js/jquery.dataTables.min.js" %}"></script>
+        <script src="{% static "dashpages/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js" %}"></script>
+        
+        <!-- Responsive examples -->
+        <script src="{% static "dashpages/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js" %}"></script>
+        <script src="{% static "dashpages/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js" %}"></script>
+
+        <script src="{% static "dashpages/assets/js/pages/dashboard.init.js" %}"></script>
+
+        <!-- App js -->
+        <script src="{% static "dashpages/assets/js/app.js" %}"></script>
+    </body>
+
+</html>

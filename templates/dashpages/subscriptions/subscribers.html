@@ -1,0 +1,116 @@
+{% extends "dashpages/includes/base.html"%}
+{% load static %}
+
+{% block title %}Subscribers{% endblock %}
+
+
+{% block css %}{% endblock %}
+
+{% block main %}
+                        
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Basic Subscribers</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/dashboard/">Ecommerce</a></li>
+                    <li class="breadcrumb-item active">Subscribers</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<!-- Create a table for current subscribers -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- Create a search for the table below -->
+                <div class="row mb-2">
+                    <div class="col-sm-4">
+                        <div class="search-box me-2 mb-2 d-inline-block">
+                            <div class="position-relative">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <i class="bx bx-search-alt search-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="text-sm-end">
+                            <a href="/dashboard/subscriber-details/"><button type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2" href="/dashboard/subscriber-details/"><i class="mdi mdi-plus me-1"></i> Add New</button></a>
+                        </div>
+                    </div><!-- end col-->
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-centered table-nowrap mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 20px;">
+                                    <div class="form-check font-size-16">
+                                        <input class="form-check-input" type="checkbox" id="customCheck1">
+                                        <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                    </div>
+                                </th>
+                                <th>Subscriber ID</th>
+                                <th>Email</th>
+                                <th>Subscription Date</th>
+                                <th>Subscription Status</th>
+                                <th>Subscription Plan</th>
+                                <th>Subscription Price</th>
+                                <th>Payment Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="form-check font-size-16">
+                                        <input class="form-check-input" type="checkbox" id="customCheck2">
+                                        <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                    </div>
+                                </td>
+                                <td><a href="/dashboard/subscriber-details/" class="text-body fw-bold">#SK2540</a> </td>
+                                <td>
+                                    <img src="{% static "dashpages/assets/images/users/avatar-2.jpg" %}" alt="user-image" class="me-1" height="24">
+                                    Herbert C. Patton
+                                </td>
+                                <td>
+                                    07 Oct, 2019
+                                </td>
+                                <td>
+                                    <span class="badge bg-soft-success text-success font-size-12">Active</span>
+                                </td>
+                                <td>
+                                    Monthly
+                                </td>
+                                <td>
+                                    $ 15
+                                </td>
+                                
+                                <td>
+                                    <span class="badge bg-soft-success text-success font-size-12">Paid</span>
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0);" class="me-3 text-primary" data-bs-container="#tooltip-container1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18 hoverItem"></i></a>
+                                    
+                                    <a class="text-danger" data-bs-toggle="modal" data-bs-target="#delete" title="Delete"><i class="mdi mdi-trash-can font-size-18 hoverItem"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
