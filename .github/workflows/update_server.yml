@@ -50,7 +50,7 @@ jobs:
             cd sales_dashboard/
             git clone https://github.com/veganna/sales_dashboard.git .
             docker-compose build
-            docker_compose up -d
+            docker-compose up -d
             systemctl restart nginx
 
             
