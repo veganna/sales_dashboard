@@ -1,12 +1,9 @@
 #on push ot pull request to main branch, run the following steps:
 # - checkout the code
 # - build the docker image
-# - ssh into the server
-# - pull the docker image from the docker hub
-# - run the docker image
-# - make migrations
-# - migrate
-# - runserver
+# - run migrate
+# - deploy it to github container registry
+
 
 name: Horizon Sales Ecommenrce
 
@@ -17,27 +14,46 @@ on:
     branches: [ "main" ]
 
 jobs:
-    
-    build:
-  
-      runs-on: ubuntu-latest
-  
-      steps:
+  build:
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v3
-      - name: Horizon Sales Dashboard
-        run: docker build . --file Dockerfile --tag horizon-sales-dashboard:$(date +%s)
-      - name: SSH into server
-        uses: appleboy/ssh-action@master
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag ghcr.io/veganna/sale_dashboard:latest
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            docker pull horizonsalesdashboard:latest
-            docker run -d -p 8000:8000 horizonsalesdashboard:latest
-            docker exec -it horizonsalesdashboard:latest python manage.py makemigrations
-            docker exec -it horizonsalesdashboard:latest python manage.py migrate
-            docker exec -it horizonsalesdashboard:latest python manage.py runserver
-            systemctl restart nginx
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push image to GitHub Container Registry
+        uses: docker/push-action@v1
+        with:
+          registry: ghcr.io
+          repository: veganna/sale_dashboard
+          tags: latest
+
+# - name: Login to GitHub Container Registry
+#         uses: docker/login-action@v1
+#         with:
+#           registry: ghcr.io
+#           username: ${{ github.repository_owner }}
+#           password: ${{ secrets.GITHUB_TOKEN }}
+
+#       - name: Push image to GitHub Container Registry
+#         uses: docker/push-action@v1
+#         with:
+#           registry: ghcr.io
+#           repository: your-username/your-repo-name
+#           tags: latest
+
+#       - name: Run migrate
+#         run: docker-compose run web python manage.py migrate
+
+#       - name: Run tests
+#         run: docker-compose run web python manage.py test
+
+#       - name: Deploy to Heroku
+#         uses:
+
 
