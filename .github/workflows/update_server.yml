@@ -46,14 +46,12 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.KEY }}
           script: |
-            cd /home
-            rm -rf sales_dashboard
-            mkdir sales_dashboard
-            cd sales_dashboard/
-            git clone $GIT_REPO .
-            docker-compose build
+            apt update -y
+            apt install docker.io -y
+            docker pull ghcr.io/veganna/sales_dashboard:latest
             docker-compose up -d
-            systemctl restart nginx
+
+            
             
 
             
