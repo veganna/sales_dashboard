@@ -38,14 +38,25 @@ jobs:
       - name: Run migrations
         run: docker-compose run web python manage.py migrate
       - name: deploy to server
+        env:
+          GIT_REPO: ${{ secrets.GIT_REPO }}
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.KEY }}
           script: |
-            docker-compose pull
+            cd /home
+            rm -rf sales_dashboard
+            mkdir sales_dashboard
+            cd sales_dashboard/
+            git clone $GIT_REPO .
+            docker-compose build
             docker-compose up -d
+            systemctl restart nginx
+            
+
+            
           
 
 
