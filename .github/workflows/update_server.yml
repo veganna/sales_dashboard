@@ -37,8 +37,8 @@ jobs:
           add_git_labels: true
       - name: Run migrations
         run: docker-compose run web python manage.py migrate
-        uses: appleboy/ssh-action@master
       - name: deploy to server          
+        uses: appleboy/ssh-action@master
         env:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
