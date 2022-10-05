@@ -37,13 +37,18 @@ jobs:
           add_git_labels: true
       - name: Run migrations
         run: docker-compose run web python manage.py migrate
-      - name: deploy to server
         uses: appleboy/ssh-action@master
+      - name: deploy to server          
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          PORT: ${{ secrets.PORT }}
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
+          host: $HOST
+          username: $USERNAME
+          key: $KEY
+          port: PORT
           script: |
             docker-compose pull
             docker-compose up -d
