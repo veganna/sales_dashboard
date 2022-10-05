@@ -42,7 +42,7 @@ jobs:
         env:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
+          KEY: ${{ secrets.KEY }}
           PORT: ${{ secrets.PORT }}
         with:
           host: $HOST
