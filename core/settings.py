@@ -157,6 +157,29 @@ MEDIA_ROOT = os.path.join(DIRNAME, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
+#fix cors error
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "https://dashboard.horizon-development.com",
+    "https://horizon-development.com",
+    "https://100kstrong.com",
+    "https://www.100kstrong.com",
+    "https://www.horizon-development.com",
+]
+CORS_ORIGIN_REGEX_WHITELIST = [
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "https://dashboard.horizon-development.com",
+    "https://horizon-development.com",
+    "https://100kstrong.com",
+    "https://www.100kstrong.com",
+    "https://www.horizon-development.com",
+]
+
+    
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
