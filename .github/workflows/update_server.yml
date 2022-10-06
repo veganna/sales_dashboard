@@ -41,7 +41,6 @@ jobs:
         uses: appleboy/ssh-action@master
         env: 
           GIT_PASS: ${{ secrets.GIT_PASS }}
-          GIT_REPOSITORY: ${{ github.repositoryUrl }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
@@ -54,7 +53,7 @@ jobs:
             git config --global user.username "veganna"
             git config --global user.email "mateus153lol@gamil.com"
             git config --global user.password $GIT_PASS
-            git clone $GIT_REPOSITORY .
+            git clone https://github.com/veganna/sales_dashboard.git .
             docker-compose build
             docker-compose up -d
             systemctl restart nginx
