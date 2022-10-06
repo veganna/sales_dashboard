@@ -50,10 +50,7 @@ jobs:
             rm -rf sales_dashboard/
             mkdir sales_dashboard
             cd sales_dashboard/
-            git config --global user.username "veganna"
-            git config --global user.email "mateus153lol@gamil.com"
-            git config --global user.password $GIT_PASS
-            git clone https://github.com/veganna/sales_dashboard.git .
+            git clone https://$GIT_PASS@github.com/veganna/sales_dashboard.git .
             docker-compose build
             docker-compose up -d
             systemctl restart nginx
