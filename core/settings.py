@@ -159,8 +159,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 #fix cors error
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = ['*']
-CORS_ORIGIN_REGEX_WHITELIST = ['*']
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "https://dashboard.horizon-development.com"
+]
+
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
