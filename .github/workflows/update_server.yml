@@ -31,7 +31,7 @@ jobs:
           registry: ghcr.io
           repository: veganna/sales_dashboard
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GIT_PASS }}
           tag_with_ref: true
           tag_with_sha: true
           add_git_labels: true
@@ -39,6 +39,9 @@ jobs:
         run: docker-compose run web python manage.py migrate
       - name: deploy to server
         uses: appleboy/ssh-action@master
+        env: 
+          GIT_PASS: ${{ secrets.GIT_PASS }}
+          GIT_REPOSITORY: ${{ github.repositoryUrl }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
@@ -48,7 +51,10 @@ jobs:
             rm -rf sales_dashboard/
             mkdir sales_dashboard
             cd sales_dashboard/
-            git clone https://github.com/veganna/sales_dashboard.git .
+            git config --global user.username "veganna"
+            git config --global user.email "mateus153lol@gamil.com"
+            git config --global user.password $GIT_PASS
+            git clone $GIT_REPOSITORY .
             docker-compose build
             docker-compose up -d
             systemctl restart nginx
