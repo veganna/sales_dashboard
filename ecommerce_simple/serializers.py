@@ -1,4 +1,5 @@
 from inflection import tableize
+from requests import request
 from rest_framework import serializers
 from .models import *
 from accounts.models import User
@@ -45,7 +46,7 @@ class GetAllProductsSerializer(serializers.Serializer):
 class GalleryItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = GalleryItem
-        fields = ['image']
+        fields = ['name', 'image', 'alt_tag']
 
 class GallerySerializer(serializers.ModelSerializer):
     gallery_items = serializers.SerializerMethodField()
@@ -159,7 +160,7 @@ class UserResponseSerializer(serializers.ModelSerializer):
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
-        fields = ['id', 'address', 'city', 'phone', 'name' ,'country', 'zip_code']
+        fields = ['id', 'address_line_1', 'address_line_1', 'city', 'phone', 'name' ,'country', 'zip_code']
 
 class OrderResponseSerializers(serializers.Serializer):
     id = serializers.IntegerField()
@@ -177,7 +178,8 @@ class CreateOrderSerializer(serializers.Serializer):
     country = serializers.CharField()
     state = serializers.CharField()
     city = serializers.CharField()
-    address = serializers.CharField()
+    address_line_1 = serializers.CharField()
+    address_line_2 = serializers.CharField(required=False)
     zip_code = serializers.CharField()
     phone = serializers.CharField()
 
@@ -193,3 +195,10 @@ class OrderStatusResponseSerializers(serializers.Serializer):
     is_shipped = serializers.BooleanField()
     is_delivered = serializers.BooleanField()
     is_completed = serializers.BooleanField()
+
+class MembershipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Membership
+        fields = ['id', 'membership_name', 'membership_price', 'membership_description', 'membership_image', 'membership_lifetime']
+
+    

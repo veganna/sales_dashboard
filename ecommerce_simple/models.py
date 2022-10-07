@@ -21,6 +21,7 @@ class BaseProducts(models.Model):
 class GalleryItem(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to="gallery/independent", blank=True)
+    alt_tag = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -47,11 +48,9 @@ class Category(models.Model):
 class ProductSimple(BaseProducts):
     gallery = models.ForeignKey(Gallery, on_delete=models.CASCADE, blank=True, null=True)
     sales_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    is_featured = models.BooleanField(default=False)
-    is_on_sale = models.BooleanField(default=False)
-    is_new = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False) # add the ability to have multiple featured sections
     is_best_seller = models.BooleanField(default=False)
-    is_available = models.BooleanField(default=True)
+    is_available = models.BooleanField(default=True) 
     is_published = models.BooleanField(default=True)
     is_variable = models.BooleanField(default=False)
     tax = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
@@ -150,7 +149,8 @@ class Address(models.Model):
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=255)
     zip_code = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
+    address_line_1 = models.CharField(max_length=255)
+    address_line_2 = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
@@ -163,6 +163,7 @@ class Address(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, blank=True)
+    #billing_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True)
     shipping_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True)
     items = models.ManyToManyField(CartItem, blank=True)
     ip = models.CharField(max_length=255, blank=True, null=True)
@@ -188,4 +189,19 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.email
+
+class Membership(models.Model):
+    membership_user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, blank=True, null=True)
+    membership_name = models.CharField(max_length=255)
+    membership_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    membership_description = models.TextField(blank = True, null = True)
+    membership_image = models.ImageField(upload_to="membership", blank=True)
+    membership_is_available = models.BooleanField(default=True)
+    membership_lifetime = models.CharField(default="1 month", max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_abstract = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.membership_name + " " + self.membership_user.email
 

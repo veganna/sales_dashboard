@@ -7,13 +7,25 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken, AuthenticationFailed
+from ecommerce_simple.member import MemberCore
+from ecommerce_simple.models import Membership
+from ecommerce_simple.serializers import MembershipSerializer
 
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
+    is_member = serializers.SerializerMethodField()
+    membership = serializers.SerializerMethodField()
+    
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'phone')
+        fields = ('id', 'email', 'first_name', 'last_name', 'phone', 'description','is_member', 'membership')
+
+    def get_is_member(self, obj):
+        return MemberCore(obj).is_member()
+
+    def get_membership(self, obj):
+        return MembershipSerializer(MemberCore(obj).membership, many=False).data
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -92,6 +104,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 class LoginResponseSerializer(serializers.Serializer):
     refresh = serializers.CharField()
     access = serializers.CharField()
+    user = UserSerializer()
 
     
 

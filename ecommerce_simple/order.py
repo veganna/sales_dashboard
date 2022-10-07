@@ -7,10 +7,10 @@ class OrderCore:
     shipping_address : object = field(default=None)
     order : object = field(init=False, default=None)
     cart : object = field(init=False, default = None)
+    ip : str = field(default=None)
 
     def __post_init__(self):
         if not self.user: raise ValueError('User is required')
-        self.user = self.user
         self.shipping_address = self.validate_shipping_address()
         self.cart = self.validate_cart()
 
@@ -31,7 +31,8 @@ class OrderCore:
 
     def create_order(
         self,
-        address = None,
+        address_line_1 = None,
+        address_line_2 = None,
         country = None,
         state = None,
         city = None,
@@ -42,8 +43,8 @@ class OrderCore:
         if not self.cart: raise ValueError('Cart does not exist')
         self.order = Order(
             user=self.user,
-            shipping_address=self.shipping_address if self.shipping_address else self.create_shipping_address(country, state, city, address, zip_code , name, phone),
-            ip = self.cart.ip,
+            shipping_address=self.shipping_address if self.shipping_address else self.create_shipping_address(country, state, city, address_line_1, address_line_2, zip_code , name, phone),
+            ip = self.ip if self.ip else None,
         )
 
         self.order.save()
@@ -54,12 +55,10 @@ class OrderCore:
         self.order.save()
         return self.order
 
-
-
-
     def create_shipping_address(
         self,
-        address = None,
+        address_line_1 = None,
+        address_line_2 = None,
         country = None,
         state = None,
         city = None,
@@ -71,7 +70,8 @@ class OrderCore:
             country=country,
             state=state,
             city=city,
-            address=address,
+            address_line_1=address_line_1,
+            address_line_2=address_line_2,
             zip_code=zip_code,
             name=name,
             phone=phone,

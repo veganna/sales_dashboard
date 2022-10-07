@@ -38,11 +38,19 @@ class GalleryAdmin(admin.ModelAdmin):
     list_filter = ()
     fieldsets = ()
 
+class MembershipAdmin(admin.ModelAdmin):
+    list_display = ('membership_name', 'membership_price', 'membership_description', 'membership_lifetime', 'membership_is_available', 'is_abstract')
+    search_fields = ('membership_name', 'membership_price', 'membership_description', 'membership_lifetime', 'membership_is_available', 'is_abstract')
+
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
 
 
 admin.site.register(ProductSimple, ProductSimpleAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Gallery, GalleryAdmin)
 admin.site.register(GalleryItem, GalleryItemAdmin)
+admin.site.register(Membership, MembershipAdmin)
 admin.site.register(ProductVariable)
 

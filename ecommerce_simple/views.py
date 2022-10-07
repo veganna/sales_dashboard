@@ -8,6 +8,9 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .cart import CartCore
 from .order import OrderCore
+from .member import MemberCore
+from accounts.serializers import UserSerializer
+
 # Create your views here.
 
 class GetAllProductsView(generics.GenericAPIView):
@@ -199,6 +202,37 @@ class GetAllCategoriesView(generics.GenericAPIView):
             status=status.HTTP_200_OK
         )
 
+class GetFecturedProductsView(generics.GenericAPIView):
+    permission_classes = [AllowAny,]
+
+    @swagger_auto_schema(
+        operation_description="Get featured products (Auth Not Required)",
+        operation_id="Get featured products",
+        operation_summary="Get featured products (Auth Not Required)",
+        tags=['Products Utils'],
+        responses = {
+            200: ProductSimpleSerializer(many=True),
+            400: "Bad Request",
+            401: "Unauthorized",
+            403: "Forbidden",
+            404: "Not Found",
+            500: "Internal Server Error",
+        }
+    )
+    def get(self, request):
+        products_simple = ProductSimple.objects.filter(is_variable=False, is_featured=True)
+        serializer_simple = ProductSimpleSerializer(products_simple, many=True)
+        products_variable = ProductVariableSerializer(ProductVariable.objects.filter(is_available = True, is_featured=True), many=True)
+
+        return Response(
+            {
+                'products_simple': serializer_simple.data,
+                'products_variable': products_variable.data
+            }, 
+            status=status.HTTP_200_OK
+        )
+
+
 class GetCart(generics.GenericAPIView):
     permission_classes = [IsAuthenticated,]
     serializer_class = CartSerializer
@@ -347,7 +381,8 @@ class CreateOrder(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         country = serializer.validated_data.get('country')
         city = serializer.validated_data.get('city')
-        address = serializer.validated_data.get('address')
+        address_line_1 = serializer.validated_data.get('address_line_1')
+        address_line_2 = serializer.validated_data.get('address_line_2')
         state = serializer.validated_data.get('state')
         zip_code = serializer.validated_data.get('zip_code')
         name = request.user.first_name+" "+request.user.last_name
@@ -357,7 +392,8 @@ class CreateOrder(generics.GenericAPIView):
             phone=phome,
             country=country,
             city=city,
-            address=address,
+            address_line_1=address_line_1,
+            address_line_2=address_line_2,
             state=state,
             zip_code=zip_code
         )
@@ -451,6 +487,172 @@ class DeleteOrder(generics.GenericAPIView):
             {"message": "Order Deleted"},
             status=status.HTTP_200_OK
         )
+
+class GetMembers(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated,]
+    serializer_class = UserSerializer
+
+    @swagger_auto_schema(
+        operation_description="Get members (Auth required)",
+        operation_id="Get members (Authenticated)",
+        operation_summary="Get members (Auth required)",
+        tags=['Members'],
+        responses = {
+            200: UserSerializer(many=True),
+            400: "Bad Request",
+            401: "Unauthorized",
+            403: "Forbidden",
+            404: "Not Found",
+            500: "Internal Server Error",
+        }
+    )
+    def get(self, request):
+        user = request.user
+        member_core = MemberCore(user)
+        if not member_core.is_member():
+            return Response(
+                {"message": "You are not a member"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        members = member_core.get_members()
+        if members:
+            return Response(
+                UserSerializer(members, many=True).data,
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            {"message": "No members found"},
+            status=status.HTTP_200_OK
+        )
+class GetMemberById(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated,]
+    serializer_class = UserSerializer
+
+    @swagger_auto_schema(
+        operation_description="Get member by id (Auth required)",
+        operation_id="Get member by id (Authenticated)",
+        operation_summary="Get member by id (Auth required)",
+        tags=['Members'],
+        responses = {
+            200: UserSerializer(many=False),
+            400: "Bad Request",
+            401: "Unauthorized",
+            403: "Forbidden",
+            404: "Not Found",
+            500: "Internal Server Error",
+        }
+    )
+    def get(self, request, user_id):
+        user = request.user
+        member_core = MemberCore(user)
+        if not member_core.is_member():
+            return Response(
+                {"message": "You are not a member"},
+                status=status.HTTP_200_OK
+            )
+
+        member = member_core.get_member(user_id)
+        if member:
+            return Response(
+                UserSerializer(member).data,
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            {"message": "No member found"},
+            status=status.HTTP_200_OK
+        )
+
+class GetUserMembership(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated,]
+    serializer_class = MembershipSerializer
+
+    @swagger_auto_schema(
+        operation_description="Get user membership (Auth required)",
+        operation_id="Get user membership (Authenticated)",
+        operation_summary="Get user membership (Auth required)",
+        tags=['Members'],
+        responses = {
+            200: MembershipSerializer(many=False),
+            400: "Bad Request",
+            401: "Unauthorized",
+            403: "Forbidden",
+            404: "Not Found",
+            500: "Internal Server Error",
+        }
+    )
+    def get(self, request):
+        user = request.user
+        member_core = MemberCore(user)
+        if not member_core.is_member():
+            return Response(
+                {"message": "You are not a member"},
+                status=status.HTTP_200_OK
+            )
+
+        membership = member_core.get_membership()
+        if membership:
+            return Response(
+                MembershipSerializer(membership).data,
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            {"message": "No membership found"},
+            status=status.HTTP_200_OK
+        )
+    
+class GetMemberPlans(generics.GenericAPIView):
+    permission_classes = [AllowAny,]
+    serializer_class = MembershipSerializer
+
+    @swagger_auto_schema(
+        operation_description="Get member plans (Auth not required)",
+        operation_id="Get member plans (Authenticated)",
+        operation_summary="Get member plans (Auth required)",
+        tags=['Members Utils'],
+        responses = {
+            200: MembershipSerializer(many=True),
+            400: "Bad Request",
+            401: "Unauthorized",
+            403: "Forbidden",
+            404: "Not Found",
+            500: "Internal Server Error",
+        }
+    )
+    def get(self, request):
+        
+
+        plans = Membership
+        
+        if plans:
+            return Response(
+                MembershipSerializer(plans, many=True).data,
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            {"message": "No plans found"},
+            status=status.HTTP_200_OK
+        )
+class GetPlanById(generics.GenericAPIView):
+    permission_classes = [AllowAny,]
+    serializer_class = MembershipSerializer
+
+    @swagger_auto_schema(
+        operation_description="Get plan by id (Auth not required)",
+        operation_id="Get plan by id (Auth not required)",
+        operation_summary="Get plan by id (Auth not required)",
+        tags=['Members Utils'],
+        responses={
+            200: MembershipSerializer(many=False),
+            400: "Bad Request",
+            401: "Unauthorized",
+            403: "Forbidden",
+            404: "Not Found",
+            500: "Internal Server Error",
+        }
+    )
+    def get(self, request, plan_id):
+        pass
 
 
 
