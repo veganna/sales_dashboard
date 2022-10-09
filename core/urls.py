@@ -29,14 +29,14 @@ api_info = openapi.Info(
     description="API for the Ecommerce app",
     terms_of_service="https://horizon-development.com/terms/",
     contact=openapi.Contact(email="mateus@horizon-development.com", name="Mateus", url="https://horizon-development.com"),
-    license=openapi.License(name="BSD License"),
-
+    license=openapi.License(name="BSD License")
 )
 
 schema_view = get_schema_view(
     api_info,
     public=True,
     permission_classes=(AllowAny,),
+    url=settings.SITE_URL
 )
 
 
