@@ -203,5 +203,5 @@ class Membership(models.Model):
     is_abstract = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.membership_name + " " + self.membership_user.email
+        return self.membership_name 
 

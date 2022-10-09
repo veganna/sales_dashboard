@@ -620,10 +620,7 @@ class GetMemberPlans(generics.GenericAPIView):
         }
     )
     def get(self, request):
-        
-
-        plans = Membership
-        
+        plans = Membership.objects.filter(is_abstract = True)
         if plans:
             return Response(
                 MembershipSerializer(plans, many=True).data,
@@ -652,7 +649,16 @@ class GetPlanById(generics.GenericAPIView):
         }
     )
     def get(self, request, plan_id):
-        pass
+        plan = Membership.objects.filter(is_abstract = True, id = plan_id).first()
+        if plan:
+            return Response(
+                MembershipSerializer(plan).data,
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            {"message": "No plan found"},
+            status=status.HTTP_200_OK
+        )
 
 
 
