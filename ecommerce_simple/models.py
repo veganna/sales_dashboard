@@ -163,8 +163,8 @@ class Address(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, blank=True)
-    #billing_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True)
-    shipping_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True)
+    billing_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True, related_name='billing_address')
+    shipping_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True, related_name='shipping_address')
     items = models.ManyToManyField(CartItem, blank=True)
     ip = models.CharField(max_length=255, blank=True, null=True)
     is_paid = models.BooleanField(default=False)
@@ -204,4 +204,6 @@ class Membership(models.Model):
 
     def __str__(self):
         return self.membership_name 
+
+
 
