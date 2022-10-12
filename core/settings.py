@@ -117,8 +117,8 @@ if os.environ.get('POSTGRES_DB'):
             'PORT': os.environ.get('POSTGRES_PORT'),
         },
         'sales': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'sales.sqlite3',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'sales.sqlite3',
         }
     }
 

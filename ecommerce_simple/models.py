@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import timezone
 
 # Create your models here.
 
@@ -187,6 +188,17 @@ class Coupon(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField(null = True, blank = True)
 
+    def is_expired(self):
+        if self.end:
+            if self.end < timezone.now():
+                return True
+        return False
+
+    def is_used(self, user):
+        if self.users.filter(id=user.id).exists():
+            return True
+        return False
+        
     def __str__(self):
         return self.code
 
