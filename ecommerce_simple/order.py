@@ -53,7 +53,7 @@ class OrderCore:
             shipping_address=self.shipping_address if self.shipping_address else self.create_address(data, 'shipping_address'),
             billing_address=self.billing_address if self.billing_address else self.create_address(data, 'billing_address'),
             tax=self.tax if self.tax else self.get_tax(),
-            coupon=self.coupon if self.coupon else self.validate_coupon(data),
+            coupon=self.coupon if self.coupon else self.validate_coupon(data.get('coupon_code') if data.get('coupon_code') else None),
         )
 
         self.order.save()
@@ -123,8 +123,8 @@ class OrderCore:
         return tax
 
     def validate_coupon(self, data):
-        if not data.get('cupon_code'): return None
-        coupon = Coupon.objects.filter(code=data.get('cupon_code')).first()
+        if not data: return None
+        coupon = Coupon.objects.filter(code=data).first()
         if not coupon: raise ValueError('Coupon does not exist')
         if coupon.is_expired(): raise ValueError('Coupon is expired')
         if coupon.is_used(): raise ValueError('Coupon is used')

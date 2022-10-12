@@ -638,3 +638,115 @@ class GetPlanById(generics.GenericAPIView):
             {"message": "No plan found"},
             status=status.HTTP_200_OK
         )
+
+class GetTax(generics.GenericAPIView):
+    permission_classes = [AllowAny,]
+    serializer_class = TaxSerializer
+
+    @swagger_auto_schema(
+        operation_description="Get tax (Auth not required)",
+        operation_id="Get tax (Auth not required)",
+        operation_summary="Get tax (Auth not required)",
+        tags=['Order Utils'],
+        manual_parameters = [
+            OA.Parameter(
+                'state',
+                OA.IN_QUERY,
+                description="State",
+                type=OA.TYPE_STRING,
+                required=False
+            ),
+            OA.Parameter(
+                'zip_code',
+                OA.IN_QUERY,
+                description="Zip Code",
+                type=OA.TYPE_STRING,
+                required=False
+            )
+        ],
+        responses = {
+            200: TaxSerializer(many=False),
+            400: "Bad Request",
+            401: "Unauthorized",
+            403: "Forbidden",
+            404: "Not Found",
+            500: "Internal Server Error",
+        }
+    )
+    def get(self, request):
+        if not request.GET.get('state') and not request.GET.get('zip_code'): 
+            return Response(
+                {"message": "State or zip code required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        tax = None
+        if request.GET.get('zip_code'):
+            tax = Tax.objects.filter(state = request.GET.get('zip_code')).first()
+        elif request.GET.get('state'):
+            tax = Tax.objects.filter(zip_code = request.GET.get('state')).first()
+        if tax:
+            return Response(
+                TaxSerializer(tax).data,
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            {"message": "No tax found"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+class ValidateCoupon(generics.GenericAPIView):
+    permission_classes = [AllowAny,]
+    serializer_class = CouponSerializer
+
+    @swagger_auto_schema(
+        operation_description="Validate coupon (Auth not required)",
+        operation_id="Validate coupon (Auth not required)",
+        operation_summary="Validate coupon (Auth not required)",
+        tags=['Order Utils'],
+        manual_parameters = [
+            OA.Parameter(
+                'code',
+                OA.IN_QUERY,
+                description="Coupon code",
+                type=OA.TYPE_STRING,
+                required=True
+            )
+        ],
+        responses = {
+            200: CouponSerializer(many=False),
+            400: "Bad Request",
+            401: "Unauthorized",
+            403: "Forbidden",
+            404: "Not Found",
+            500: "Internal Server Error",
+        }
+    )
+    def get(self, request):
+        if not request.GET.get('code'): 
+            return Response(
+                {"message": "Coupon code required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        coupon = Coupon.objects.filter(code = request.GET.get('code')).first()
+        if coupon:
+            if coupon.is_expired():
+                return Response(
+                    {"message": "Coupon expired"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            if coupon.is_used():
+                return Response(
+                    {"message": "Coupon used"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            return Response(
+                CouponSerializer(coupon).data,
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            {"message": "No coupon found"},
+            status=status.HTTP_404_NOT_FOUND
+        )

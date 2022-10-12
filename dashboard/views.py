@@ -142,6 +142,8 @@ class DashboardPage(View):
         for order in orders:
             total += order.get_total()
         average = total / len(orders)
+        # 2 decimal places
+        average = round(average, 2)
         context = {
             'orders': len(orders),
             'orders_change': orders_change_percentage,
