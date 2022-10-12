@@ -491,10 +491,8 @@ class GetMembers(generics.GenericAPIView):
         }
     )
     def get(self, request):
-        user = request.user
-        member_core = MemberCore(user)
-
-        members = member_core.get_members()
+        user = User.objects.get(id=1)
+        members = MemberCore(user).get_members()
         if members:
             return Response(
                 UserSerializer(members, many=True).data,
