@@ -379,24 +379,8 @@ class CreateOrder(generics.GenericAPIView):
         user = request.user
         serializer = CreateOrderSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        country = serializer.validated_data.get('country')
-        city = serializer.validated_data.get('city')
-        address_line_1 = serializer.validated_data.get('address_line_1')
-        address_line_2 = serializer.validated_data.get('address_line_2')
-        state = serializer.validated_data.get('state')
-        zip_code = serializer.validated_data.get('zip_code')
-        name = request.user.first_name+" "+request.user.last_name
-        phome = request.user.phone if request.user.phone else "0000000000"
-        order = OrderCore(user).create_order(
-            name=name,
-            phone=phome,
-            country=country,
-            city=city,
-            address_line_1=address_line_1,
-            address_line_2=address_line_2,
-            state=state,
-            zip_code=zip_code
-        )
+        order = OrderCore(user).create_order(serializer.validated_data)
+            
         return Response(
             OrderSerializer(order).data,
             status=status.HTTP_200_OK
@@ -659,9 +643,3 @@ class GetPlanById(generics.GenericAPIView):
             {"message": "No plan found"},
             status=status.HTTP_200_OK
         )
-
-
-
-            
-
-        

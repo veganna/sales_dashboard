@@ -2,7 +2,12 @@ from inflection import tableize
 from requests import request
 from rest_framework import serializers
 from .models import *
-from accounts.models import User
+from accounts.models import BaseUserManager, User
+
+class UserESerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'first_name', 'last_name', 'phone', 'description')
 
 
 class ProductSimpleSerializer(serializers.ModelSerializer):
@@ -128,10 +133,14 @@ class OrderSerializer(serializers.ModelSerializer):
     total_price = serializers.SerializerMethodField()
     total_items = serializers.SerializerMethodField()
     items = serializers.SerializerMethodField()
+    shipping_address = serializers.SerializerMethodField()
+    billing_address = serializers.SerializerMethodField()
+    tax = serializers.SerializerMethodField()
+    coupon = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'items', 'total_price', 'is_paid', 'total_items', 'is_shipped', 'is_delivered',  'is_completed', 'tracking_number', 'shipping_address', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'items', 'total_price', 'tax', 'coupon','is_paid', 'total_items', 'is_shipped', 'is_delivered',  'is_completed', 'tracking_number', 'shipping_address', 'billing_address','created_at', 'updated_at', 'coupon']
 
     def get_total_price(self, obj):
         total = 0
@@ -146,26 +155,56 @@ class OrderSerializer(serializers.ModelSerializer):
         return total
 
     def get_user(self, obj):
-        return UserResponseSerializer(obj.user, many=False).data
+        return UserESerializer(obj.user, many=False).data
 
     def get_items(self, obj):
         return CartItemSerializer(obj.items.all(), many=True).data
 
+    def get_shipping_address(self, obj):
+        try:
+            return AddressSerializer(obj.shipping_address, many=False).data
+        except:
+            return []
 
-class UserResponseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id' , 'email', 'first_name', 'last_name', 'phone']
+    def get_billing_address(self, obj):
+        try:
+            return AddressSerializer(obj.billing_address, many=False).data
+        except:
+            return []
+
+    def get_tax(self, obj):
+        try:
+            return TaxSerializer(obj.tax, many=False).data
+        except:
+            return []
+
+    def get_coupon(self, obj):
+        try:
+            return CouponSerializer(obj.coupon, many=False).data
+        except:
+            return []
+    
 
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
         fields = ['id', 'address_line_1', 'address_line_1', 'city', 'phone', 'name' ,'country', 'zip_code']
 
+class TaxSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tax
+        fields = ['id', 'zip_code', 'state', 'tax_rate']
+
+class CouponSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coupon
+        fields = ['id', 'code', 'type', 'amount']
+
 class OrderResponseSerializers(serializers.Serializer):
     id = serializers.IntegerField()
-    user = UserResponseSerializer(many=False)
+    user = UserESerializer(many=False)
     shipping_address = AddressSerializer(many=False)
+    billing_address = AddressSerializer(many=False)
     items = CartItemResponseSerializer(many=True)
     is_paid = serializers.BooleanField()
     is_shipped = serializers.BooleanField()
@@ -173,15 +212,27 @@ class OrderResponseSerializers(serializers.Serializer):
     is_completed = serializers.BooleanField()
     total_cost = serializers.IntegerField()
     total_items = serializers.IntegerField()
+    coupon = CouponSerializer(many=False)
+    tax = TaxSerializer(many=False)
 
 class CreateOrderSerializer(serializers.Serializer):
-    country = serializers.CharField()
-    state = serializers.CharField()
-    city = serializers.CharField()
-    address_line_1 = serializers.CharField()
-    address_line_2 = serializers.CharField(required=False)
-    zip_code = serializers.CharField()
-    phone = serializers.CharField()
+    billing_address_address_line_1 = serializers.CharField(required = True)
+    billing_address_address_line_2 = serializers.CharField(required = False)
+    billing_address_state = serializers.CharField(required = True)
+    billing_address_city = serializers.CharField(required = True)
+    billing_address_phone = serializers.CharField(required = True)
+    billing_address_name = serializers.CharField(required = True)
+    billing_address_country = serializers.CharField(required = True)
+    billing_address_zip_code = serializers.CharField(required = True)
+    shipping_address_address_line_1 = serializers.CharField(required = True)
+    shipping_address_address_line_2 = serializers.CharField(required = False)
+    shipping_address_city = serializers.CharField(required = True)
+    shipping_address_state = serializers.CharField(required = True)
+    shipping_address_phone = serializers.CharField(required = True)
+    shipping_address_name = serializers.CharField(required = True)
+    shipping_address_country = serializers.CharField(required = True)
+    shipping_address_zip_code = serializers.CharField(required = True)
+    cupon_code = serializers.CharField(required = False)
 
     
 class DeleteOrderSerializer(serializers.Serializer):

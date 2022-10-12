@@ -46,6 +46,37 @@ class MembershipAdmin(admin.ModelAdmin):
     list_filter = ()
     fieldsets = ()
 
+class CartItemsAdmin(admin.ModelAdmin):
+    list_display = ('product', 'quantity')
+    search_fields = ('product', 'quantity')
+
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
+
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('user',)
+    search_fields = ('user',)
+
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
+
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ('name', 'address_line_1', 'address_line_2', 'city', 'state', 'country')
+    search_fields = ('name', 'address_line_1', 'address_line_2', 'city', 'state', 'country')
+
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('user', 'billing_address', 'shipping_address', 'ip', 'is_paid', 'is_shipped', 'is_delivered', 'is_completed', 'tracking_number')
+    search_fields = ('user', 'billing_address', 'shipping_address', 'ip', 'is_paid', 'is_shipped', 'is_delivered', 'is_completed', 'tracking_number')
+
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
 
 admin.site.register(ProductSimple, ProductSimpleAdmin)
 admin.site.register(Category, CategoryAdmin)
@@ -53,4 +84,8 @@ admin.site.register(Gallery, GalleryAdmin)
 admin.site.register(GalleryItem, GalleryItemAdmin)
 admin.site.register(Membership, MembershipAdmin)
 admin.site.register(ProductVariable)
+admin.site.register(CartItem, CartItemsAdmin)
+admin.site.register(Cart, CartAdmin)
+admin.site.register(Address, AddressAdmin)
+admin.site.register(Order, OrderAdmin)
 

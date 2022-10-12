@@ -54,4 +54,5 @@ urlpatterns = [
         extra_context={'schema_url':'openapi-schema'}
     ), name='swagger-ui'),
     path('openapi-schema/', schema_view.as_view(), name='openapi-schema'),
+    path('sales/', include('crm.urls', namespace='CRM')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

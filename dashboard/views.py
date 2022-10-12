@@ -1,9 +1,11 @@
+from accounts.models import User as costumer
 from django.shortcuts import render
 from django.views.generic import View
 from .dashboardGeneric import *
 from django.contrib.auth.hashers import make_password
 # Create your views here.
 from ecommerce_simple.models import *
+from datetime import datetime, timedelta
 
 # class GenerateGenericListView(View):
 #     def get(self, request, model):
@@ -115,7 +117,40 @@ from ecommerce_simple.models import *
 
 class DashboardPage(View):
     def get(self, request):
-        return render(request, 'dashpages/admin/overview.html')
+        orders = Order.objects.filter(is_paid=True)
+
+        # filter by last month
+        last_month = datetime.now() - timedelta(days=30)
+        orders_last_month = orders.filter(created_at__gte=last_month)
+        #filter by previous month
+        previous_month = datetime.now() - timedelta(days=60)
+        orders_previous_month = orders.filter(created_at__gte=previous_month, created_at__lte=last_month)
+
+        # calculate the change between last month and previous month
+        orders_last_month_count = orders_last_month.count()
+        orders_previous_month_count = orders_previous_month.count()
+        orders_change = orders_last_month_count - orders_previous_month_count
+        if orders_previous_month_count != 0:
+            orders_change_percentage = orders_change / orders_previous_month_count * 100
+        else:
+            if orders_last_month_count > 0:
+                orders_change_percentage = 100
+            else:
+                orders_change_percentage = 0
+
+        total = 0
+        for order in orders:
+            total += order.get_total()
+        average = total / len(orders)
+        context = {
+            'orders': len(orders),
+            'orders_change': orders_change_percentage,
+            'total': total,
+            'average': average
+        }
+        print(orders, total, average)
+
+        return render(request, 'dashpages/admin/overview.html', context)
 
 class ProductOverviewPage(View):
     def get(self, request):

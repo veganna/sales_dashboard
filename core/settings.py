@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'dashboard',
     'accounts',
     'ecommerce_simple',
+    'crm',
     #third party
     'rest_framework',
     "corsheaders",
@@ -95,6 +96,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'sales': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'sales.sqlite3',
     }
 }
 if os.environ.get('POSTGRES_DB'):
@@ -110,6 +115,10 @@ if os.environ.get('POSTGRES_DB'):
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
             'HOST': os.environ.get('POSTGRES_HOST'),
             'PORT': os.environ.get('POSTGRES_PORT'),
+        },
+        'sales': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'sales.sqlite3',
         }
     }
 
@@ -274,3 +283,5 @@ if os.environ.get('SITE_URL'):
     SITE_URL = os.environ.get('SITE_URL')
 else:
     SITE_URL = 'http://localhost:8000'
+
+

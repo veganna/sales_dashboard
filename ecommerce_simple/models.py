@@ -46,7 +46,7 @@ class Category(models.Model):
         return self.name
 
 class ProductSimple(BaseProducts):
-    gallery = models.ForeignKey(Gallery, on_delete=models.CASCADE, blank=True, null=True)
+    gallery = models.ForeignKey(Gallery, on_delete=models.DO_NOTHING, blank=True, null=True)
     sales_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     is_featured = models.BooleanField(default=False) # add the ability to have multiple featured sections
     is_best_seller = models.BooleanField(default=False)
@@ -115,7 +115,7 @@ class Service(BaseProducts):
     pass
 
 class CartItem(models.Model):
-    product = models.ForeignKey(ProductSimple, on_delete=models.CASCADE)
+    product = models.ForeignKey(ProductSimple, on_delete=models.DO_NOTHING)
     quantity = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -124,7 +124,7 @@ class CartItem(models.Model):
         return self.product.name
 
 class Cart(models.Model):
-    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey('accounts.User', on_delete=models.DO_NOTHING, blank=True, null=True)
     items = models.ManyToManyField(CartItem, blank=True)
     ip = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -160,11 +160,40 @@ class Address(models.Model):
     def __str__(self):
         return self.name
 
+class Tax(models.Model):
+    zip_code = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, blank=True, null=True)
+    tax_rate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        if not self.state:
+            return self.zip_code
+        return self.state
+
+class Coupon(models.Model):
+    COUPON_TYPE_CHOICES = (
+        ('percent', 'Percent'),
+        ('fixed', 'Fixed'),
+    )
+    code = models.CharField(max_length=255)
+    type = models.CharField(max_length=255, choices=COUPON_TYPE_CHOICES)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    products = models.ManyToManyField(ProductSimple, blank=True)
+    users = models.ManyToManyField('accounts.User', blank=True)
+    start = models.DateTimeField()
+    end = models.DateTimeField(null = True, blank = True)
+
+    def __str__(self):
+        return self.code
 
 class Order(models.Model):
-    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, blank=True)
-    billing_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True, related_name='billing_address')
-    shipping_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True, related_name='shipping_address')
+    user = models.ForeignKey('accounts.User', on_delete=models.DO_NOTHING, blank=True)
+    billing_address = models.ForeignKey(Address, on_delete=models.DO_NOTHING, blank=True, related_name='billing_address')
+    shipping_address = models.ForeignKey(Address, on_delete=models.DO_NOTHING, blank=True, related_name='shipping_address')
     items = models.ManyToManyField(CartItem, blank=True)
     ip = models.CharField(max_length=255, blank=True, null=True)
     is_paid = models.BooleanField(default=False)
@@ -174,24 +203,28 @@ class Order(models.Model):
     tracking_number = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    tax = models.ForeignKey(Tax, on_delete=models.DO_NOTHING, blank=True, null=True)
+    coupon = models.ForeignKey(Coupon, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     def get_total(self):
         total = 0
         for item in self.items.all():
-            total += item.price
+            semi_total = item.product.price * item.quantity
+            total += semi_total
         return total
 
     def get_total_items(self):
         total = 0
         for item in self.items.all():
-            total += 1
+            items = item.quantity
+            total += items
         return total
 
     def __str__(self):
         return self.user.email
 
 class Membership(models.Model):
-    membership_user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, blank=True, null=True)
+    membership_user = models.ForeignKey('accounts.User', on_delete=models.DO_NOTHING, blank=True, null=True)
     membership_name = models.CharField(max_length=255)
     membership_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     membership_description = models.TextField(blank = True, null = True)
@@ -204,6 +237,7 @@ class Membership(models.Model):
 
     def __str__(self):
         return self.membership_name 
+
 
 
 
