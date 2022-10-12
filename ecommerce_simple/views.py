@@ -473,13 +473,13 @@ class DeleteOrder(generics.GenericAPIView):
         )
 
 class GetMembers(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [AllowAny,]
     serializer_class = UserSerializer
 
     @swagger_auto_schema(
-        operation_description="Get members (Auth required)",
-        operation_id="Get members (Authenticated)",
-        operation_summary="Get members (Auth required)",
+        operation_description="Get members (Auth not required)",
+        operation_id="Get members (Auth not required)",
+        operation_summary="Get members (Auth not required)",
         tags=['Members'],
         responses = {
             200: UserSerializer(many=True),
@@ -493,11 +493,6 @@ class GetMembers(generics.GenericAPIView):
     def get(self, request):
         user = request.user
         member_core = MemberCore(user)
-        if not member_core.is_member():
-            return Response(
-                {"message": "You are not a member"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
 
         members = member_core.get_members()
         if members:
@@ -591,8 +586,8 @@ class GetMemberPlans(generics.GenericAPIView):
 
     @swagger_auto_schema(
         operation_description="Get member plans (Auth not required)",
-        operation_id="Get member plans (Authenticated)",
-        operation_summary="Get member plans (Auth required)",
+        operation_id="Get member plans (Auth not required)",
+        operation_summary="Get member plans (Auth not required)",
         tags=['Members Utils'],
         responses = {
             200: MembershipSerializer(many=True),
