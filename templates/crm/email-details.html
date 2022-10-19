@@ -1,0 +1,144 @@
+{% extends "dashpages/includes/base.html"%}
+{% load static %}
+
+{% block title %}Email Details{% endblock %}
+
+
+{% block css %}{% endblock %}
+
+{% block main %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Read Email</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Email</a></li>
+                    <li class="breadcrumb-item active">Read Email</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<div class="row">
+    <div class="col-12">
+        <!-- Left sidebar -->
+        <div class="email-leftbar card">
+            <div class="d-grid">
+                <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#composemodal">
+                    Compose
+                </button>
+            </div>
+            <div class="mail-list mt-4">
+                <a href="#" class="active" style="color: black; font-weight: 700;"><i class="mdi mdi-email-outline me-2"></i> Inbox <span class="ms-1 float-end">(18)</span></a>
+                <a href="#"><i class="mdi mdi-diamond-stone me-2"></i>Scheduled</a>
+                <a href="#"><i class="mdi mdi-file-outline me-2"></i>Draft</a>
+                <a href="#"><i class="mdi mdi-email-check-outline me-2"></i>Sent Mail</a>
+                <a href="#"><i class="mdi mdi-trash-can-outline me-2"></i>Trash</a>
+            </div>
+
+
+           
+
+           
+        </div>
+        <!-- End Left sidebar -->
+
+        <!-- Right Sidebar -->
+        <div class="email-rightbar mb-3">
+
+            <div class="card">
+                <div class="btn-toolbar p-3" role="toolbar">
+                    <div class="btn-group me-2 mb-2 mb-sm-0">
+                        <a  class="btn btn-primary "  href= "/sales/emails/">
+                            <i class="  ri-rewind-mini-line"></i> 
+                        </a>
+                    </div>
+                    
+                    <div class="btn-group me-2 mb-2 mb-sm-0">
+                        <a  class="btn btn-primary">
+                            More <i class="mdi mdi-dots-vertical ms-2"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Mark as Unread</a>
+                            <a class="dropdown-item" href="#">Add to Tasks</a>
+                            <a class="dropdown-item" href="#">Add Star</a>
+                        </div>
+                    </div>
+                    <div class="btn-group me-2 mb-2 mb-sm-0">
+                        <button type="button" class="btn btn-primary waves-light waves-effect"><i class="far fa-trash-alt"></i></button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="d-flex mb-4">
+                        <img class="me-3 rounded-circle avatar-sm" src="{% static 'dashpages/assets/images/users/avatar-2.jpg' %}" alt="Generic placeholder image">
+                        <div class="flex-1">
+                            <h5 class="font-size-14 my-1">Humberto D. Champion</h5>
+                            <small class="text-muted">support@domain.com</small>
+                        </div>
+                    </div>
+
+                    <h4 class="font-size-16">This Week's Top Stories</h4>
+
+                    <p>Dear Lorem Ipsum,</p>
+                    <p>Praesent dui ex, dapibus eget mauris ut, finibus vestibulum enim. Quisque arcu leo, facilisis in fringilla id, luctus in tortor. Nunc vestibulum est quis orci varius viverra. Curabitur dictum volutpat massa vulputate molestie. In at felis ac velit maximus convallis.
+                    </p>
+                    <p>Sed elementum turpis eu lorem interdum, sed porttitor eros commodo. Nam eu venenatis tortor, id lacinia diam. Sed aliquam in dui et porta. Sed bibendum orci non tincidunt ultrices. Vivamus fringilla, mi lacinia dapibus condimentum, ipsum urna lacinia lacus, vel tincidunt mi nibh sit amet lorem.</p>
+                    <p>Sincerly,</p>
+                    <hr/>
+
+                    <div class="row">
+                        <div class="col-xl-2 col-6">
+                            <div class="card">
+                                <img class="card-img-top img-fluid" src="{% static 'dashpages/assets/images/small/img-3.jpg' %}" alt="Card image cap">
+                                <div class="py-2 text-center">
+                                    <a href="" class="fw-medium">Download</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-6">
+                            <div class="card">
+                                <img class="card-img-top img-fluid" src="{% static 'dashpages/assets/images/small/img-4.jpg' %}" alt="Card image cap">
+                                <div class="py-2 text-center">
+                                    <a href="" class="fw-medium">Download</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="replyArea"></div>
+                    </div>
+
+                    <a id="reply" class="btn btn-secondary waves-effect mt-4"><i class="mdi mdi-reply"></i> Reply</a>
+                </div>
+
+            </div>
+        </div>
+        <!-- card -->
+
+    </div>
+    <!-- end Col-9 -->
+
+</div>
+<!-- end row -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+    
+    $('#reply').click(function(){
+        $('#replyArea').append('<input type="text" placeholder="subject" id="emailSubject" class="form-control"><textarea class="form-control" rows="3" placeholder="message"></textarea>');
+        //change the button to send
+        $('#reply').text('Send');
+        $('#reply').attr('id', 'send');
+        //add cancel button
+        $('#replyArea').append('<a id="cancel" class="btn btn-secondary waves-effect mt-4">Cancel</a>');
+
+    
+    });
+</script>
+{% endblock %}

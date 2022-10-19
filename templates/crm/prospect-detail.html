@@ -1,0 +1,270 @@
+{% extends "dashpages/includes/base.html"%}
+{% load static %}
+
+{% block title %}Propsect Details{% endblock %}
+
+
+{% block css %}<link rel="stylesheet" href="{% static '/dashpages/assets/css/prospect-detail.css' %}">{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-6">
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col flexme">
+                        
+                        <h4>Prospect Details</h4>
+                        {% comment %} go backwards a page {% endcomment %}
+                        <div class="">
+                            <a id="edit"class="btn btn-light">Edit</a>
+                            <a href="/sales/prospects" class="btn btn-primary">Back</a>
+
+                        </div>
+                        
+                    </div>
+                </div>
+
+
+                {% comment %} make a verticle table with the same information as above {% endcomment %}
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Name</th>
+                            <td id="name">{{ prospect.first_name }} {{prospect.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Email</th>
+                            <td id="email">{{ prospect.email }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Phone</th>
+                            <td id="phone">{{ prospect.phone }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Company</th>
+                            <td id="company">{{ prospect.company }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Linkedin</th>
+                            <td id="linkedin">{{ prospect.linkedin }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Website</th>
+                            <td id="website">{{ prospect.website }}</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">Status</th>
+                            <td id="prospectStatus">{{ prospect.status }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Created</th>
+                            <td>{{ prospect.created_at }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Updated</th>
+                            <td>{{ prospect.updated_at }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+
+        <div class="card">
+            <div class="card-body">
+                {% comment %} Make a table of notes with a add new note button {% endcomment %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for note in prospect.notes.all %}
+                        <tr>
+                            <td>{{ note.action }}</td>
+                            <td>{{ note.date }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                
+                </table>
+                {% comment %} Add a button to open the addnote modal {% endcomment %}
+                <button type="button" class="btn btn-primary  waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#addnote">
+                    Add Note
+                </button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                {% comment %} Make a table of notes with a add new note button {% endcomment %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Task</th>
+                            <th scope="col">Due Date</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in prospect.tasks.all %}
+                        <tr>
+                            <td>{{ task.task }}</td>
+                            <td>{{ task.due_date }}</td>
+                            <td>
+                                <a href="/sales/tasks/{{ task.id }}" class="btn btn-primary">Mark As Complete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                
+                </table>
+                {% comment %} Add a button to open the addnote modal {% endcomment %}
+                <button type="button" class="btn btn-primary  waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#addtask">
+                    Add Task
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% comment %} create a modal addnote {% endcomment %}
+<div class="modal fade" id="addnote" tabindex="-1" role="dialog" aria-labelledby="addnote" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addnote">Add Note</h5>
+            </div>
+            <div class="modal-body">
+                <form action="/sales/prospects/{{ prospect.id }}/addnote" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {% comment %} Select action {% endcomment %}
+                        <label for="action">Action</label>
+                        <select class="form-control" id="action" name="action">
+                            <option value="Call">Call</option>
+                            <option value="Email">Email</option>
+                            <option value="Meeting">Meeting</option>
+                            <option value="Meeting">LinkedIn</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        {% comment %} textarea {% endcomment %}
+                        <label for="note">Note</label>
+                        <textarea class="form-control" id="note" name="note" rows="3"></textarea>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+        
+
+{% comment %} make a modal for adding new tasks {% endcomment %}
+<div class="modal fade" id="addtask" tabindex="-1" role="dialog" aria-labelledby="addtask" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addtask">Add Task</h5>
+            </div>
+            <div class="modal-body">
+                <form action="/sales/prospects/{{ prospect.id }}/addtask" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="task">Task</label>
+                        <input type="text" class="form-control" id="task" name="task" placeholder="Enter Task">
+                        {% comment %} Select action {% endcomment %}
+                        {% comment %} Due time {% endcomment %}
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="due_date">Due Date</label>
+                                <input type="date" class="form-control" id="due_date" name="due_date">
+                            </div>
+                            <div class="col-6">
+                                <label for="due_time">Due Time</label>
+                                <input type="time" class="form-control" id="due_time" name="due_time">
+                            </div>
+                        </div>
+                        {% comment %} select type of task {% endcomment %}
+                        <label for="type">Type</label>
+                        <select class="form-control" id="type" name="type">
+                            <option value="Call">Call</option>
+                            <option value="Email">Email</option>
+                            <option value="Meeting">Meeting</option>
+                            <option value="Meeting">LinkedIn</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        {% comment %} add note {% endcomment %}
+                        <label for="note">Note</label>
+                        <textarea class="form-control" id="note" name="note" rows="3"></textarea>
+
+
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+    $('#edit').click(function() {
+        $('#name').replaceWith('<td id="name" style="display: flex;"><input type="text" class="form-control" id="first_name"  value="{{ prospect.first_name }}"><input type="text" class="form-control" id="last_name" value="{{ prospect.last_name }}"></td>');
+        $('#email').replaceWith('<td id="email"><input type="text" class="form-control" id="emailInput" value="{{ prospect.email }}"></td>');
+        $('#phone').replaceWith('<td id="phone"><input type="text" class="form-control" id="phoneInput" value="{{ prospect.phone }}"></td>');
+        $('#company').replaceWith('<td id="company"><input type="text" class="form-control" id="companyInput"  value="{{ prospect.company }}"></td>');
+        $('#linkedin').replaceWith('<td id="linkedin"><input type="text" class="form-control" id="linkedinInput" value="{{ prospect.linkedin }}"></td>');
+        $('#website').replaceWith('<td id="website"><input type="text" class="form-control" id="websiteInput"  value="{{ prospect.website }}"></td>');
+        $('#prospectStatus').replaceWith('<td id="prospectStatus"><select id="statusSelect" class="form-control" value="{{ prospect.status }}"><option value="1">Low</option><option value="2">Medium</option><option value="3">High</option></select></td>');
+        $('#edit').replaceWith('<button type="button" class="btn btn-primary" id="save" onclick="save()" ">Save</button>');
+    });
+   
+    function save() {
+        var first_name = $('#first_name').val();
+        var last_name = $('#last_name').val();
+        var email = $('#emailInput').val();
+        var phone = $('#phoneInput').val();
+        var company = $('#companyInput').val();
+        var linkedin = $('#linkedinInput').val();
+        var website = $('#websiteInput').val();
+        var status = $('#statusSelect').val();
+        $.ajax({
+            url: '/sales/prospects/{{ prospect.id }}/edit/',
+            type: 'POST',
+            data: {
+                'first_name': first_name,
+                'last_name': last_name,
+                'email': email,
+                'phone': phone,
+                'company': company,
+                'linkedin': linkedin,
+                'website': website,
+                'status': status,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function() {
+                location.reload();
+
+            }
+
+        });
+    }
+</script>
+{% endblock %}

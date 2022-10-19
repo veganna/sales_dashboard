@@ -1,11 +1,17 @@
-from accounts.models import User as costumer
-from django.shortcuts import render
+from cgi import parse_header, parse_multipart
+from django.http import JsonResponse
+from accounts.models import User
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from .dashboardGeneric import *
-from django.contrib.auth.hashers import make_password
-# Create your views here.
 from ecommerce_simple.models import *
 from datetime import datetime, timedelta
+from django.db.models import Q
+from ecommerce_simple.models import *
+import json
+from requests_toolbelt.multipart import decoder
+
+
 
 # class GenerateGenericListView(View):
 #     def get(self, request, model):
@@ -156,6 +162,17 @@ class DashboardPage(View):
 
 class ProductOverviewPage(View):
     def get(self, request):
+        products_simple = ProductSimple.objects.filter(is_variable=False)
+        products_variable = ProductVariable.objects.all()
+        products = []
+        for product in products_simple:
+            products.append(product)
+        for product in products_variable:
+            products.append(product)
+        context = {
+            'products': products
+        }
+
         return render(request, 'dashpages/products/products.html')
 
 
@@ -164,6 +181,15 @@ class ProductOverviewPage(View):
 class EditProductSimple(View):
     def get(self, request):
         return render(request, 'dashpages/products/edit-product-simple.html')
+
+
+    def post(self, request):
+        form_data = request.body
+        #convert multipart/form-data media type to object
+        form_data = form_data.decode('utf-8')
+        return JsonResponse({'success': True})
+
+
 
 class EditProductVariable(View):
     def get(self, request):

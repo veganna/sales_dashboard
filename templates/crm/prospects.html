@@ -1,0 +1,177 @@
+{% extends "dashpages/includes/base.html"%}
+{% load static %}
+
+{% block title %}Prospects{% endblock %}
+
+
+{% block css %}{% endblock %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-12">
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Prospects</h5>
+                <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#myModal">Add New Customer</button>
+                {% comment %} delete customer button {% endcomment %}
+                <button onclick="_delete()" type="button" class="btn btn-danger waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+        
+        
+                <div class="table-responsive" style="margin-top:2rem;">
+                    <table class="table table-centered datatable dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead class="thead-light">
+                            <tr>
+                                <th style="width: 20px;">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="customercheck">
+                                        <label class="form-check-label mb-0" for="customercheck">&nbsp;</label>
+                                    </div>
+                                </th>
+                                <th>Prospect</th>
+                                <th>Company</th>
+                                <th>Priority</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Linkedin</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prospect in prospects %}
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="{{prospect.id}}">
+                                        <label class="form-check-label mb-0" for="{{prospect.id}}">&nbsp;</label>
+                                    </div>
+                                </td>
+                                
+                                <td><a href="/sales/prospects/{{prospect.id}}/">{{prospect.first_name}} {{prospect.last_name}}</a></td>
+                                <td><p>{{prospect.company}}</p></td>
+                                <td><span class="badge rounded-pill badge-soft-success">{{prospect.get_status}}</span></td>
+                                <td><a href="tel:{{prospect.number}}" style="font-weight: bold;">{{prospect.number}}<i class="ri-clipboard-line" style="vertical-align: sub;"></i></a></td>
+                                <td><a href="mailto: {{prospect.email}}" style="font-weight: bold; ">{{prospect.email}}</a></td>
+                                <td><a href="{{prospect.linkedin}}" style="font-weight: bold; ">Go To Linkedin <i class="ri-external-link-line" style="vertical-align: sub;"></i></a></td>
+                            </tr>
+                            {% endfor %}                                               
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-6 col-md-4 col-xl-3">
+    <!-- sample modal content -->
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Add A Prospect</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="create-prospect" method="post">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="exampleFormControlInput1" class="form-label">First Name</label>
+                                <input name="first_name" type="text" class="form-control" id="exampleFormControlInput1" placeholder="First Name">
+                            </div>
+                            <div class="col-6">
+                                <label for="exampleFormControlInput2" class="form-label">Last Name</label>
+                                <input name="last_name" type="text" class="form-control" id="exampleFormControlInput2" placeholder="Last Name">
+                            </div>
+                        </div>
+                      
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="exampleFormControlInput3" class="form-label">Phone</label>
+                                <input name="phone" type="text" class="form-control" id="exampleFormControlInput3" placeholder="Phone">
+                            </div>
+                            <div class="col-6">
+                                <label for="exampleFormControlInput4" class="form-label">Email</label>
+                                <input name="email" type="text" class="form-control" id="exampleFormControlInput4" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="exampleFormControlInput5" class="form-label">Linkedin</label>
+                                <input name="linkedin" type="text" class="form-control" id="exampleFormControlInput5" placeholder="Linkedin">
+                            </div>
+                            <div class="col-6">
+                                <label for="exampleFormControlInput1" class="form-label">Website</label>
+                                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Website">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="exampleFormControlInput1" class="form-label">Priority</label>
+                                <select name="status" class="form-select" aria-label="Default select example">
+                                    {% for s in status %}
+                                    <option value="{{s.id}}">{{s.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="exampleFormControlInput1" class="form-label">Company</label>
+                                <input name="company" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Company">
+                            </div>
+                        </div>
+                        {% csrf_token %}
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Discard</button>
+                    <button type="button" onclick="_submit()" class="btn btn-primary waves-effect waves-light">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function _delete(){
+        let inputs = document.querySelectorAll('input[type="checkbox"]:checked');
+        let ids = [];
+        inputs.forEach((input) => {
+            ids.push(input.id);
+        });
+        fetch(
+            window.location.href?.split('#')[0],
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    ids: ids
+                })
+            }
+        ).then((response) => {
+            if (response.ok) {
+                location.reload();
+            }
+        }).catch(
+            (error) => {
+                console.log(error);
+            }
+        );
+    }
+</script>
+<script>
+    var form = document.querySelector('#create-prospect');
+    function _submit(){
+        form.submit();
+    }
+    {% if session.messages %}
+    {% for message in session.messages %}
+    alert('{{message}}');
+    {% endfor %}
+    {% endif %}
+</script>
+{% endblock %}

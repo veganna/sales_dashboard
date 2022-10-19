@@ -41,40 +41,40 @@
                         <tbody>
                             <tr>
                                 <th>Visibility</th>
-                                <th>Unpublished</th>
+                                <th>{% if not product or not product.is_published %}Unpublished{% else %}Published{% endif %}</th>
                             </tr>
                             <tr>
                                 <th scope="row">Created</th>
-                                <td>January 7th, 2022</td>
+                                <td>{% if product %}{{ product.created_at }}{% endif %}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Price</th>
-                                <td>$7.99</td>
+                                <td>${% if product %}{{ product.price }}{% else %}0{% endif %}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Discounted Price</th>
-                                <td>$7.22</td>
+                                <td>${% if product %}{{ product.sales_price }}{% else %}0{% endif %}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Abandoned Carts</th>
-                                <td>7</td>
+                                <td>{% if product %}{{ product.get_abandoned_cart }}{% else %}0{% endif %}</td>
                             </tr>
                             <tr>
                                 <th>Views</th>
-                                <td>12</td>
+                                <td>{% if product %}{{ product.get_views }}{% else %}0{% endif %}</td>
                             </tr>
                             <tr>
                                 <th>Sales</th>
-                                <td>2</td>
+                                <td>{% if product %}{{ product.get_sales }}{% else %}0{% endif %}</td>
                             </tr>
 
                         </tbody>
                     </table>
                     <div class="text-center mt-4">
                                 
-                        <button type="submit" class="btn btn-primary me-2 waves-effect waves-light">Save Changes</button>
-                        <button type="submit" class="btn btn-info me-2 waves-effect waves-light">Duplicate Product</button>
-                        <button type="submit" class="btn btn-danger me-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#delete">Delete</button>
+                        <button onclick="productSimpleApp._submit()" class="btn btn-primary me-2 waves-effect waves-light">Save Changes</button>
+                        <button class="btn btn-info me-2 waves-effect waves-light">Duplicate Product</button>
+                        <button class="btn btn-danger me-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#delete">Delete</button>
                     </div>
                 </div>
 
@@ -138,26 +138,18 @@
                                 <p class="card-title-desc">Fill all information below</p>
                                 
         
-                            <form>
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label class="form-label" class="control-label">Product Type</label>
-                                        <select class="form-control select2">
-                                            <option value="EL">Simple</option>
-                                            <option value="FA">Variable</option>
-                                        </select>
-                                    </div>
-                                </div>
+                            <form id="productBasicForm">
+                                {% csrf_token %}
                                 <div class="row">
                                     <div class="mb-3 col-lg-">
                                         <label class="form-label" for="productname">Product Name</label>
-                                        <input type="text" id="productname" name="productname" class="form-control" placeholder="Enter product name">
+                                        <input type="text" id="productname" name="name" class="form-control" placeholder="Enter product name">
                                     </div>
 
 
                                     <div class="mb-3 col-lg-4">
                                         <label class="form-label" for="quantity">Quantity</label>
-                                        <input type="number" id="quantity" name="quantity" class="form-control" placeholder="Enter quantity">
+                                        <input type="number" id="quantity" name="stock" class="form-control" placeholder="Enter quantity">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -173,7 +165,7 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label" class="control-label">Discount Type</label>
-                                            <select class="form-control select2">
+                                            <select name="discout_type" class="form-control select2">
                                                 <option value="EL">No Discount</option>
                                                 <option value="FA">Percentage Discount</option>
                                                 <option value="FI">Fixed Discount</option>
@@ -188,7 +180,7 @@
                                             <label class="form-label" class="control-label">Discount Ammount</label>
 
                                             <!-- input for sale price -->
-                                            <input id="saleprice" name="saleprice" type="text" class="form-control" placeholder="Enter ammount">
+                                            <input id="saleprice" name="discount" type="text" class="form-control" placeholder="Enter ammount">
                                         </div>
                                     </div>
                                 </div>
@@ -199,9 +191,9 @@
                                             <label class="form-label" class="control-label">Category</label>
                                             <select class="form-control select2">
                                                 <option>Select</option>
-                                                <option value="EL">Electronic</option>
-                                                <option value="FA">Fashion</option>
-                                                <option value="FI">Fitness</option>
+                                                {% for category in categories %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
@@ -210,9 +202,9 @@
                                             <label class="form-label" class="control-label">Sub Category</label>
                                             <select class="form-control select2">
                                                 <option>Select</option>
-                                                <option value="EL">Electronic</option>
-                                                <option value="FA">Fashion</option>
-                                                <option value="FI">Fitness</option>
+                                                {% for category in categories %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
@@ -222,11 +214,9 @@
                                             <label class="form-label" class="control-label">Cupon Codes</label>
 
                                             <select class="select2 form-control select2-multiple" multiple="multiple" data-placeholder="Choose ...">
-                                                <option value="TO">Touchscreen</option>
-                                                <option value="CF">Call Function</option>
-                                                <option value="NO" selected>Notifications</option>
-                                                <option value="FI" selected>Fitness</option>
-                                                <option value="OU">Outdoor</option>
+                                                {% for cupon in cupons %}
+                                                <option value="{{ cupon.id }}">{{ cupon.code }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
@@ -238,7 +228,7 @@
 
                                 <div class="mb-3">
                                     <label class="form-label" for="productdesc">Product Description</label>
-                                    <textarea class="form-control" id="productdesc" rows="5"></textarea>
+                                    <textarea name="description" class="form-control" id="productdesc" rows="5"></textarea>
                                 </div>
                             </form>
 
@@ -260,77 +250,30 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for item in gallery %}
                                         <tr>
-                                            <th scope="row">1</th>
-                                            <td><img src="{% static "dashpages/assets/images/flags/germany.jpg" %}"> Mark.png <i class="mdi mdi-pencil"></i></td>
-                                            <td>15kb</td>
+                                            <th scope="row">{{item.id}}</th>
+                                            <td><img src="{{item.image.url}}"> {{item.image.name}} <i class="mdi mdi-pencil"></i></td>
+                                            <td>{{item.image.filesize}}</td>
                                             <td> <!-- input for putting image alt tags -->
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" id="quantity" name="quantity">
+                                                    <input name="alttag_{{item.id}}" value="{{item.alttag}}" type="text" class="form-control" id="alt" name="alttag">
                                                 </div>
                                             </td>
                                             <td> <!-- input for putting image caption -->
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" id="quantity" name="quantity">
+                                                    <input name="caption_{{item.id}}" value="{{item.caption}}" type="text" class="form-control" id="caption" name="caption">
                                                 </div>
                                             </td>
-                                            <td><i class="mdi mdi-trash-can font-size-18"></i></td>
+                                            <td onclick="deleteGalleryItem('{{item.id}}')"><i class="mdi mdi-trash-can font-size-18"></i></td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td><img src="{% static "dashpages/assets/images/flags/germany.jpg" %}"> Mark.png <i class="mdi mdi-pencil"></i></td>
-                                            <td>15kb</td>
-                                            <td> <!-- input for putting image alt tags -->
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" id="quantity" name="quantity">
-                                                </div>
-                                            </td>
-                                            <td> <!-- input for putting image caption -->
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" id="quantity" name="quantity">
-                                                </div>
-                                            </td>
-                                            <td><i class="mdi mdi-trash-can font-size-18"></i></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td><img src="{% static "dashpages/assets/images/flags/germany.jpg" %}"> Mark.png <i class="mdi mdi-pencil"></i></td>
-                                            <td>15kb</td>
-                                            <td> <!-- input for putting image alt tags -->
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" id="quantity" name="quantity">
-                                                </div>
-                                            </td>
-                                            <td> <!-- input for putting image caption -->
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" id="quantity" name="quantity">
-                                                </div>
-                                            </td>
-                                            <td><i class="mdi mdi-trash-can font-size-18"></i></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td><img src="{% static "dashpages/assets/images/flags/germany.jpg" %}"> Mark.png <i class="mdi mdi-pencil"></i></td>
-                                            <td>15kb</td>
-                                            <td> <!-- input for putting image alt tags -->
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" id="quantity" name="quantity">
-                                                </div>
-                                            </td>
-                                            <td> <!-- input for putting image caption -->
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" id="quantity" name="quantity">
-                                                </div>
-                                            </td>
-                                            <td><i class="mdi mdi-trash-can font-size-18"></i></td>
-                                        </tr>
-                                        
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
-                            <form action="/" method="post" class="dropzone">
+                            <form id="productGalleryForm" class="dropzone" action="" method="options">
                                 <div class="fallback">
-                                    <input name="file" type="file" multiple />
+                                    <input name="file" type="file" accept="image/*"  multiple />
                                 </div>
 
                                 <div class="dz-message needsclick">
@@ -347,7 +290,7 @@
                             <p class="card-title-desc">Add your shipping Charges</p>
 
                             <!-- Make a form for shipping charges -->
-                            <form>
+                            <form id="productShippingForm">
                                 <div class="row">
                                     <!-- Dropdown "Shipping type" -->
                                     <div class="col-md-4">
@@ -377,18 +320,16 @@
                             <h4 class="card-title">Visibility</h4>
                             <p class="card-title-desc">Here you set all your visibility settings.</p>
 
-                            <form>
+                            <form id="productVisibilityForm">
                                 <!-- Make a drop down for public and private -->
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label" class="control-label">Visibility</label>
-                                            <select class="form-control select2">
-                                                <option value="FI">Public</option>
-                                                
-                                                <option value="EL">Private</option>
-                                                <option value="EL">Scheduled</option>
-                                                
+                                            <select name="visibility" class="form-control select2">
+                                                <option {% if product.is_public %}selected{% endif %} value="public">Public</option>
+                                                <option value="private">Private</option>
+                                                <option value="scheduled">Scheduled</option>
                                             </select>
                                         </div>
                                     </div>
@@ -404,11 +345,11 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label" class="control-label">Featured</label>
-                                        <select class="form-control select2">
-                                            <option value="FI">Not Featured</option>
+                                        <select name="feactured" class="form-control select2">
+                                            <option value="no">Not Featured</option>
                                             
-                                            <option value="EL">Featured Section 1</option>
-                                            <option value="EL">Featured Section 2</option>
+                                            <option value="featured">Featured Section 1</option>
+                                            <option value="featured_2">Featured Section 2</option>
                                             
                                         </select>
                                     </div>
@@ -426,7 +367,7 @@
                             <h4 class="card-title">Meta Data</h4>
                             <p class="card-title-desc">Fill all information below</p>
 
-                            <form>
+                            <form id="productMetadataForm">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="mb-3">
@@ -446,7 +387,7 @@
 
                                 <div class="mb-3">
                                     <label class="form-label" for="metadescription">Meta Description</label>
-                                    <textarea class="form-control" id="metadescription" rows="5"></textarea>
+                                    <textarea name="metadescription" class="form-control" id="metadescription" rows="5"></textarea>
                                 </div>
                                 
                             </form>
@@ -455,8 +396,8 @@
                         </div>
                     </div>
                     <ul class="pager wizard twitter-bs-wizard-pager-link">
-                        <li class="previous"><a href="#">Previous</a></li>
-                        <li class="next"><a href="#">Next</a></li>
+                        <li class="previous"><a href="javascript:void(0)">Previous</a></li>
+                        <li class="next"><a href="javascript:void(0)">Next</a></li>
                     </ul>
                 </div>
             </div>
@@ -487,6 +428,7 @@
 
 {% block scripts %}
 
+<script src="{% static 'dashpages/assets/products/js/product_simple_app.js' %}"></script>
 
 <script>
     

@@ -1,74 +1,104 @@
 {% extends "dashpages/includes/base.html"%}
 {% load static %}
 
-{% block title %}CRM | Dashboard{% endblock %}
+{% block title %}Tasks{% endblock %}
 
 
 {% block css %}<link rel="stylesheet" href="{% static '/dashpages/assets/css/changes.css' %}">{% endblock %}
 
 {% block main %}
-<div class="row">
-    <div class="col-8">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Todays Tasks</h4>
 
-                <div class="table-responsive mt-3">
+
+
+<div class="row">
+    <div class="col-12">
+        <ul class="top-bar">
+            <li class="top-bar-item selected"> <h5>Total</h5>25</li>
+            <li class="top-bar-item"> <h5>Emails</h5>5</li>
+            <li class="top-bar-item"> <h5>Connects</h5>5</li>
+            <li class="top-bar-item"> <h5>In Mails</h5>5</li>
+            <li class="top-bar-item last-item"> <h5>Calls</h5>5</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body" >
+                <div class="row">
+                    <div class="col-6">
+                        <ul class="nav nav-tabs nav-tabs-custom nav-justified" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#home1" role="tab">
+                                    <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+                                    <span class="d-none d-sm-block">Today</span> 
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#profile1" role="tab">
+                                    <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+                                    <span class="d-none d-sm-block">This Week</span> 
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#messages1" role="tab">
+                                    <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                                    <span class="d-none d-sm-block">This Month</span>   
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#messages1" role="tab">
+                                    <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                                    <span class="d-none d-sm-block">All Tasks</span>   
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-6 quick-actions">
+                        <button type="button" class="btn btn-info quick-actions-item waves-effect waves-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Start Tasks <i class="ri-play-fill" ></i></button>                
+                        <button type="button" onclick="tasks.mass_complete()" class="btn btn-primary quick-actions-item" >Complete <i class="ri-check-line"></i></button>
+                    </div>
+                    
+                </div>
+
+                <div class="table-responsive" style="margin-top:2rem;">
                     <table class="table table-centered datatable dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead class="thead-light">
                             <tr>
                                 <th style="width: 20px;">
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customercheck">
+                                        <input type="checkbox" class="form-check-input" onchange="tasks.mass_select('customercheck')" id="customercheck">
                                         <label class="form-check-label mb-0" for="customercheck">&nbsp;</label>
                                     </div>
                                 </th>
                                 <th>Prospect</th>
                                 <th>Task</th>
-                                <th>Quick Link</th>
-                                <th style="width: 120px;">Action</th>
+                                <th>Priority</th>
+                                <th>Due Date</th>
+                                <th>Email</th>
+                                <th>Linkedin</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for task in tasks %}
                             <tr>
                                 <td>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customercheck1">
-                                        <label class="form-check-label mb-0" for="customercheck1">&nbsp;</label>
+                                        <input type="checkbox" class="form-check-input" id="{{task.id}}">
+                                        <label class="form-check-label mb-0" for="{{task.id}}">&nbsp;</label>
                                     </div>
                                 </td>
                                 
-                                <td><a href="customer-detail.html">Carolyn Harvey</a></td>
-                                <td><p>Linked In Connect</p></td>
-                                <td><a href="customer-detail.html" style="font-weight: bold; ">Go To Linkedin <i class="ri-external-link-line" style="vertical-align: sub;"></i></a></td>
-                               
-                                
-                                <td id="tooltip-container1">
-                                    <a href="javascript:void(0);" class="me-3 text-primary" data-bs-container="#tooltip-container1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18 hoverItem"></i></a>
-                                    <a class="text-danger" data-bs-toggle="modal" data-bs-target="#delete" title="Delete"><i class="mdi mdi-trash-can font-size-18 hoverItem"></i></a>
-                                </td>
+                                <td><a href="prospect/{{task.prospect.id}}/">{{task.prospect.first_name}} {{task.prospect.last_name}}</a></td>
+                                <td><p>{{task.name}}</p></td>
+                                <td><span class="badge rounded-pill badge-soft-{% if task.prospect.status.name == 'high' %}success{% elif task.prospect.status.name == 'Medium' %}info{% else %}danger{% endif %}">{{task.prospect.status.name}}</span></td>
+                                <td><a href="javascript:void(0)" style="font-weight: bold;">{{task.end_date}} <i class="ri-clipboard-line" style="vertical-align: sub;"></i></a></td>
+                                <td><a href="mailto:{{task.prospect.email}}" style="font-weight: bold; ">{{task.prospect.email}}</a></td>
+                                <td><a href="{{task.prospect.email}}" target="_blank" style="font-weight: bold; ">Go To Linkedin <i class="ri-external-link-line" style="vertical-align: sub;"></i></a></td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customercheck1">
-                                        <label class="form-check-label mb-0" for="customercheck1">&nbsp;</label>
-                                    </div>
-                                </td>
-                                
-                                <td><a href="customer-detail.html">Carolyn Harvey</a></td>
-                                <td><p>Linked In Connect</p></td>
-                                <td><a href="customer-detail.html">Go To Linkedin</a></td>
-                               
-                                
-                                <td id="tooltip-container1">
-                                    <a href="javascript:void(0);" class="me-3 text-primary" data-bs-container="#tooltip-container1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18 hoverItem"></i></a>
-                                    <a class="text-danger" data-bs-toggle="modal" data-bs-target="#delete" title="Delete"><i class="mdi mdi-trash-can font-size-18 hoverItem"></i></a>
-                                </td>
-                            </tr>
-                            
-                            
-                            
+                            {% endfor %}                                                     
                         </tbody>
                     </table>
                 </div>
@@ -76,10 +106,72 @@
             </div> <!-- end card body-->
         </div> <!-- end card -->
     </div><!-- end col-->
+
 </div>
 <!-- end row-->
+
+
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"></div>
+{% csrf_token %}
 {% endblock %}
 
 {% block scripts %}
+
+<!--tinymce js-->
+<script src="{% static 'dashpages/assets/libs/tinymce/tinymce.min.js' %}"></script>
+
+<!-- init js -->
+<script src="{% static 'dashpages/assets/js/pages/form-editor.init.js' %}"></script>
+<script src="{% static 'dashpages/assets/crm/js/tasks_app.js' %}"></script>
+<script>
+    var context = [
+        {% for task in tasks %}
+        { 
+            'index' : {{forloop.counter}},
+            'id' : {{task.id}},
+            'task' : '{{task.name}}',
+            'name' : '{{task.prospect.first_name}} {{task.prospect.last_name}}',
+            'company' : '{{task.prospect.company}}',
+            'phone' : '{{task.prospect.phone}}',
+            'email' : '{{task.prospect.email}}',
+            'linkedin' : '{{task.prospect.linkedin}}',
+            'website' : '{{task.prospect.website}}',
+            'status' : '{{task.prospect.status.name}}'
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ]
+
+    var tasks = new Tasks(context);
+</script>
+
+<script>
+    
+    $(document).ready(function() {
+        $('#send-email').click(function() {
+            Command: toastr["success"]("Email Scheduled For Delivery")
+
+            toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": 300,
+            "hideDuration": 1000,
+            "timeOut": 5000,
+            "extendedTimeOut": 1000,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+            }
+            
+        });
+    });
+
+</script>
 
 {% endblock %}
